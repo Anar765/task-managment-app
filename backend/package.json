@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "A simple app to organize and track tasks efficiently.",
   "main": "server.js",
+  "type": "module",
   "devDependencies": {
     "nodemon": "^3.1.11"
   },
