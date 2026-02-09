@@ -1,8 +1,8 @@
 import { Filter } from "lucide-react";
-import Header from "../../components/DashBoard/Header";
-import StatsCards from "../../components/DashBoard/StatsCards";
-import TaskCards from "../../components/DashBoard/TaskCards";
-import SideBar from "../../components/DashBoard/SideBar";
+import Header from "../../components/Dashboard/Header";
+import SideBar from "../../components/Dashboard/SideBar";
+import StatsCards from "../../components/Dashboard/StatsCards";
+import TaskCards from "../../components/Dashboard/TaskCards";
 
 const DashboardPage = () => {
   return (
