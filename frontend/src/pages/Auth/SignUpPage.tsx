@@ -1,10 +1,54 @@
 import { CheckCircle2, Mail, Lock, User, Eye, EyeOff, Briefcase } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+type User = {
+  username: string,
+  email: string,
+  role: string,
+  password: string
+}
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [newUser, setNewUser] = useState<User>({
+    username: "",
+    email: "",
+    role: "",
+    password: ""
+  });
+
+  const handleSubmit = (e: any) => {
+    const [username, email, role, password] = e.target;
+    setNewUser({
+      username: username.value,
+      email: email.value,
+      role: role.value,
+      password: password.value
+    });
+  }
+
+  useEffect(() => {
+    const postData = async() => {
+      try {
+        if(!newUser.username || !newUser.email || !newUser.password) return;
+        await fetch(`${import.meta.env.VITE_API_URL}/users/register`, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newUser)
+        });
+
+        console.log("Data posted to the server");
+      } catch(err) {
+        console.error(err);
+      }
+    }
+
+    postData();
+  }, [newUser]);
 
   return (
     <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center p-4">
@@ -79,7 +123,7 @@ const SignUpPage = () => {
             </div>
 
             {/* Signup Form */}
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={(e) => handleSubmit(e)}>
               {/* Full Name Field */}
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
