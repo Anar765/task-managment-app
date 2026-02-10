@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const CTA = () => {
   return (
@@ -13,10 +14,10 @@ const CTA = () => {
                 Join thousands of developers who manage their tasks with DevTasks. Free forever, no credit card required.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#" className="px-8 py-4 bg-white text-indigo-600 rounded-lg hover:bg-gray-100 transition-colors font-medium text-lg flex items-center justify-center gap-2">
+                <Link to="/signup" className="px-8 py-4 bg-white text-indigo-600 rounded-lg hover:bg-gray-100 transition-colors font-medium text-lg flex items-center justify-center gap-2">
                 Get Started Free
                 <ArrowRight className="w-5 h-5" />
-                </a>
+                </Link>
             </div>
             </div>
         </section>
