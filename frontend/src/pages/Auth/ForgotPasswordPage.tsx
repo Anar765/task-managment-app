@@ -1,5 +1,6 @@
 import { CheckCircle2, Mail, ArrowLeft, Send } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const ForgotPasswordPage = () => {
   const [emailSent, setEmailSent] = useState(false);
@@ -60,13 +61,13 @@ const ForgotPasswordPage = () => {
 
               {/* Back to Login */}
               <div className="mt-6">
-                <a
-                  href="#"
+                <Link
+                  to="/login"
                   className="flex items-center justify-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Back to login
-                </a>
+                </Link>
               </div>
             </>
           ) : (
@@ -104,13 +105,13 @@ const ForgotPasswordPage = () => {
 
                 {/* Back to Login */}
                 <div className="mt-6">
-                  <a
-                    href="#"
+                  <Link
+                    to="/login"
                     className="flex items-center justify-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
                   >
                     <ArrowLeft className="w-4 h-4" />
                     Back to login
-                  </a>
+                  </Link>
                 </div>
               </div>
             </>

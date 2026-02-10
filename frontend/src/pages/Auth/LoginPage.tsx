@@ -1,5 +1,6 @@
 import { CheckCircle2, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -129,9 +130,9 @@ const LoginPage = () => {
                   />
                   <span className="text-sm text-gray-700">Remember me</span>
                 </label>
-                <a href="#" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
+                <Link to="/forgot-password" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
                   Forgot password?
-                </a>
+                </Link>
               </div>
 
               {/* Submit Button */}
@@ -146,9 +147,9 @@ const LoginPage = () => {
             {/* Sign Up Link */}
             <p className="mt-6 text-center text-sm text-gray-600">
               Don't have an account?{' '}
-              <a href="#" className="text-indigo-600 hover:text-indigo-700 font-medium">
+              <Link to="/signup" className="text-indigo-600 hover:text-indigo-700 font-medium">
                 Sign up for free
-              </a>
+              </Link>
             </p>
           </div>
 

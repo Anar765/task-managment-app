@@ -1,4 +1,5 @@
 import { Zap, ArrowRight, CheckCircle2, Clock, TrendingUp } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const Hero = () => {
   return (
@@ -21,10 +22,10 @@ const Hero = () => {
                 Organize your work with categories that match your workflow.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <a href="#" className="px-8 py-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium text-lg flex items-center justify-center gap-2">
+                <Link to="/signup" className="px-8 py-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium text-lg flex items-center justify-center gap-2">
                   Get Started Free
                   <ArrowRight className="w-5 h-5" />
-                </a>
+                </Link>
                 <a href="#features" className="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg hover:border-gray-400 transition-colors font-medium text-lg flex items-center justify-center gap-2">
                   See Features
                 </a>
