@@ -25,7 +25,7 @@ const LoginPage = () => {
             {/* Login Form */}
             <form className="space-y-5">
               <EmailField />
-              <PasswordField />
+              <PasswordField title='Password' />
               <AuthOptions />
 
               {/* Submit Button */}

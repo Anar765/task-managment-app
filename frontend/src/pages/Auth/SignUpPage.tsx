@@ -76,8 +76,8 @@ const SignUpPage = () => {
               <FullNameField />
               <EmailField />
               <RoleAndPositionField />
-              <PasswordField />
-              <ConfirmPasswordField />              
+              <PasswordField title='Password' />
+              <ConfirmPasswordField title='Confirm password' />              
               <TermsAndConditions />
               
               {/* Submit Button */}
