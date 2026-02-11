@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import EmailField from '../../components/Auth/EmailField';
 import PasswordField from '../../components/Auth/PasswordField';
-import MobileLogo from '../../components/Auth/MobileLogo';
+import Logo from '../../components/Auth/Logo';
 import BrandingAndFeatures from '../../components/Auth/BrandingAndFeatures';
 import FullNameField from '../../components/Auth/FullNameField';
 import ConfirmPasswordField from '../../components/Auth/ConfirmPasswordField';
@@ -64,7 +64,7 @@ const SignUpPage = () => {
         {/* Right Side - Signup Form */}
         <div className="w-full max-w-md mx-auto">
           <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
-            <MobileLogo />
+            <Logo isMobileLogo={true} />
 
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Create your account</h2>

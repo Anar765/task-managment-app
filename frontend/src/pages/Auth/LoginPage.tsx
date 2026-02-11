@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import BrandingAndImage from '../../components/Auth/BrandingAndImage';
-import MobileLogo from '../../components/Auth/MobileLogo';
+import Logo from '../../components/Auth/Logo';
 import Footer from '../../components/Auth/Footer';
 import EmailField from '../../components/Auth/EmailField';
 import PasswordField from '../../components/Auth/PasswordField';
@@ -15,7 +15,7 @@ const LoginPage = () => {
         {/* Right Side - Login Form */}
         <div className="w-full max-w-md mx-auto">
           <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
-            <MobileLogo />
+            <Logo isMobileLogo={true} />
 
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome back</h2>
