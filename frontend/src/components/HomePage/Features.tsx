@@ -6,7 +6,7 @@ const Features = () => {
         <>
             {/* Features Section */}
             <section id="features" className="py-20 md:py-32 bg-white">
-                <div className="max-w-7xl mx-auto px-6">
+                <div className="container-base">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
                         Everything you need to stay organized

@@ -6,7 +6,7 @@ const Hero = () => {
     <>
         {/* Hero Section */}
       <section className="relative overflow-hidden bg-linear-to-br from-indigo-50 via-white to-purple-50 py-20 md:py-32">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <div>
@@ -102,6 +102,7 @@ const Hero = () => {
                           <div className="font-medium text-gray-900 mb-1 line-through">Setup React project</div>
                           <div className="flex items-center gap-2">
                             <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded">Frontend</span>
+                            <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 rounded">Low</span>
                           </div>
                         </div>
                       </div>
@@ -111,7 +112,7 @@ const Hero = () => {
               </div>
               
               {/* Floating Badge */}
-              <div className="absolute -top-6 -right-6 bg-white rounded-xl shadow-lg border border-gray-200 p-4">
+              <div className="absolute -top-6 -right-2 md:-right-4 bg-white rounded-xl shadow-lg border border-gray-200 p-4">
                 <div className="flex items-center gap-2">
                   <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
                     <TrendingUp className="w-5 h-5 text-green-600" />
