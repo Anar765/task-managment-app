@@ -23,7 +23,8 @@ const Features = () => {
                                 title={feature.title}
                                 text={feature.text}
                                 Icon={feature.Icon}
-                                color={feature.color}
+                                borderColor={feature.borderColor}
+                                bgColor={feature.bgColor}
                                 gradient={feature.gradient}
                                 IconColor={feature.IconColor}
                             />
