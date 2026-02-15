@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import BrandingAndImage from '../../components/Auth/BrandingAndImage';
 import Logo from '../../components/Auth/Logo';
 import Footer from '../../components/Auth/Footer';
@@ -7,6 +7,42 @@ import PasswordField from '../../components/Auth/PasswordField';
 import AuthOptions from '../../components/Auth/AuthOptions';
 
 const LoginPage = () => {
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const target = e.target as any;
+
+    const userData = {
+      email: target[0].value,
+      password: target[1].value
+    };
+
+    console.log(userData);
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/users/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+
+      if(!response.ok) {
+        throw new Error(`status code - ${response.status}, message - ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      navigate(`/dashboard/${data.user.username}`)
+
+    } catch (error) {
+      console.log("Sign in failed: ", error);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
@@ -23,7 +59,7 @@ const LoginPage = () => {
             </div>
 
             {/* Login Form */}
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
               <EmailField />
               <PasswordField title='Password' />
               <AuthOptions />
