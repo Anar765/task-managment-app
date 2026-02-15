@@ -2,9 +2,9 @@ import { User } from "../models/user.model.js";
 
 const registerUser = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, role, password } = req.body;
 
-        if(!username || !email || !password) {
+        if(!username || !email || !role || !password) {
             return res.status(400).json({
                 message: "All fields are important"
             });
@@ -22,13 +22,14 @@ const registerUser = async (req, res) => {
         const user = await User.create({
             username,
             email,
+            role,
             password,
             loggedIn: false
         });
 
         res.status(201).json({
             message: "User registered",
-            user: {id: user._id, email: user.email, username: user.username}
+            user: {id: user._id, email: user.email, username: user.username, role: user.role}
         });
 
     } catch(error) {

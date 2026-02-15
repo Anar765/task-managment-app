@@ -1,6 +1,5 @@
 import { Lock } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import EmailField from '../../components/Auth/EmailField';
 import PasswordField from '../../components/Auth/PasswordField';
 import Logo from '../../components/Auth/Logo';
@@ -10,51 +9,43 @@ import ConfirmPasswordField from '../../components/Auth/ConfirmPasswordField';
 import RoleAndPositionField from '../../components/Auth/RoleAndPositionField';
 import TermsAndConditions from '../../components/Auth/TermsAndConditions';
 
-type User = {
-  username: string,
-  email: string,
-  role: string,
-  password: string
-}
-
 const SignUpPage = () => {
-  const [newUser, setNewUser] = useState<User>({
-    username: "",
-    email: "",
-    role: "",
-    password: ""
-  });
+  const navigate = useNavigate()
 
-  const handleSubmit = (e: any) => {
-    const [username, email, role, password] = e.target;
-    setNewUser({
-      username: username.value,
-      email: email.value,
-      role: role.value,
-      password: password.value
-    });
-  }
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {    
+    // 1. Get data from form targets
+    const target = e.target as any;
+    const userData = {
+      username: target[0].value,
+      email: target[1].value,
+      role: target[2].value,
+      password: target[3].value
+    };
 
-  useEffect(() => {
-    const postData = async() => {
-      try {
-        if(!newUser.username || !newUser.email || !newUser.password) return;
-        await fetch(`${import.meta.env.VITE_API_URL}/users/register`, {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(newUser)
-        });
+    try {
+      // 2. Perform the POST request directly here
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/users/register`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
 
-        console.log("Data posted to the server");
-      } catch(err) {
-        console.error(err);
+      if (!response.ok) {
+        throw new Error(`Status: ${response.status}`);
       }
-    }
 
-    postData();
-  }, [newUser]);
+      const data = await response.json();
+      console.log("Success:", data);
+
+      // 3. Navigate using the INTERNAL path
+      navigate(`/dashboard/${data.user.username}`); 
+
+    } catch (err) {
+      console.error("Signup failed:", err);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center p-4">
@@ -72,7 +63,7 @@ const SignUpPage = () => {
             </div>
 
             {/* Signup Form */}
-            <form className="space-y-4" onSubmit={(e) => handleSubmit(e)}>
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <FullNameField />
               <EmailField />
               <RoleAndPositionField />
