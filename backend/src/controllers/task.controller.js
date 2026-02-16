@@ -1,4 +1,5 @@
 import { Task } from "../models/task.model.js";
+import mongoose from "mongoose";
 
 const createTask = async(req, res) => {
     try {
@@ -43,6 +44,27 @@ const createTask = async(req, res) => {
     }
 }
 
+const getTasks = async(req, res) => {
+    try {
+        const { userId } = req.params;
+        
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                message: "Invalid user ID"
+            });
+        }
+
+        const tasks = await Task.find({ userId });
+        res.status(200).json(tasks);
+    } catch(error) {
+        res.status(500).json({
+            error: error.message,
+            message: "Internal Server Error"
+        });
+    }
+}
+
 export {
-    createTask
+    createTask,
+    getTasks
 }
