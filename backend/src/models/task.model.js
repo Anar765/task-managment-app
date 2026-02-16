@@ -25,6 +25,11 @@ const taskSchema = new Schema.create(
         date: {
             type: Date,
             required: true
+        },
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Users",
+            required: true
         }
     },
     {
@@ -32,4 +37,4 @@ const taskSchema = new Schema.create(
     }
 );
 
-export const Task = mongoose.model("Task", taskSchema);
+export const Task = mongoose.model("Tasks", taskSchema);

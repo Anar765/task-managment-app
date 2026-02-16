@@ -3,6 +3,7 @@ import { Task } from "../models/task.model.js";
 const createTask = async(req, res) => {
     try {
         const { title, description, category, status, difficulty, date } = req.body;
+        const { userId } = req.params;
 
         if(!title || !description || !category || !status || !difficulty || !date) {
             return res.status(400).json({
@@ -16,7 +17,8 @@ const createTask = async(req, res) => {
             category,
             status,
             difficulty,
-            date
+            date,
+            userId
         });
 
         res.status(201).json({
@@ -28,7 +30,8 @@ const createTask = async(req, res) => {
                 category: task.category,
                 status: task.status,
                 difficulty: task.difficulty,
-                date: task.date
+                date: task.date,
+                userId: task.userId
             }
         });
         
