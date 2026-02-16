@@ -9,7 +9,7 @@ const TaskCards = () => {
     useEffect(() => {
         const getTasks = async () => {
             try {
-                const response = await fetch("./tasksData.json");
+                const response = await fetch("/tasksData.json");
                 if(!response.ok) {
                     throw new Error("Fetch Error: can't fetch tasks data");
                 }
