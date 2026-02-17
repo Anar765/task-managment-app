@@ -3,12 +3,35 @@ import Header from "../../components/Dashboard/Header";
 import SideBar from "../../components/Dashboard/SideBar";
 import StatsCards from "../../components/Dashboard/StatsCards";
 import TaskCards from "../../components/Dashboard/TaskCards";
+import { useState } from "react";
+import type { Task } from "../../types/tasks.type";
+import NewTaskForm from "../../components/Dashboard/NewTaskForm";
 
 const DashboardPage = () => {
-  return (
-    <div className="min-h-screen bg-gray-50">
 
-      <Header />
+  const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget)
+
+    const task: Task = {
+      title: formData.get("title") as string,
+      description: formData.get("description") as string,
+      status: "Not completed",
+      priority: formData.get("priority") as string,
+      category: formData.get("category") as string,
+      date: new Date(formData.get("date") as string)
+    }
+
+    console.log(task);
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 relative">
+
+      <Header setIsNewTaskFormOpen={setIsNewTaskFormOpen} />
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">        
         <StatsCards />
@@ -31,6 +54,8 @@ const DashboardPage = () => {
           
         </div>
       </div>
+
+      {isNewTaskFormOpen && <NewTaskForm handleSubmit={handleSubmit} setIsNewTaskFormOpen={setIsNewTaskFormOpen} />}
     </div>
   )
 }
