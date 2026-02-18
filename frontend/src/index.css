@@ -180,6 +180,10 @@
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
   }
+
+  button {
+    @apply cursor-pointer;
+  }
 }
 
 @layer utilities {
