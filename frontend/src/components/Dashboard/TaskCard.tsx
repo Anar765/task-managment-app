@@ -18,8 +18,7 @@ const TaskCard = ({title, description, category, status, priority, date}: Task) 
         <div 
             // 2. toggle state on click
             onClick={() => setIsExpanded(!isExpanded)}
-            className={`
-                bg-white rounded-xl p-4 sm:p-6 border transition-all duration-200 hover:shadow-md cursor-pointer
+            className={`task-container
                 ${isInProgress ? "border-indigo-200 border-l-4" : "border-gray-100"}
                 ${isExpanded ? "ring-1 ring-indigo-50" : ""}
             `}
@@ -52,15 +51,15 @@ const TaskCard = ({title, description, category, status, priority, date}: Task) 
                         {description}
                     </p>
 
-                    <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-4 text-xs sm:text-sm text-gray-500">
-                        <div className="flex flex-wrap items-center gap-4">
-                            <div className="flex items-center gap-1">
+                    <div className="flex-between-center flex-wrap gap-y-2 gap-x-4 text-xs sm:text-sm text-gray-500">
+                        <div className="flex-hor-center flex-wrap gap-4">
+                            <div className="flex-hor-center gap-1">
                                 <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                 <span>
                                     {isCompleted ? "Done" : "Due"}: {date.toLocaleString("en-US", { month: "short", day: "numeric" })}
                                 </span>
                             </div>
-                            <div className="flex items-center gap-1">
+                            <div className="flex-hor-center gap-1">
                                 <Tag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                 <span className={`px-2 py-0.5 ${categoryStyles.bgColor} ${categoryStyles.textColor} rounded text-[10px] sm:text-xs`}>
                                     {category}

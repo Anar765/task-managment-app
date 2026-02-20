@@ -5,13 +5,13 @@ const TasksFilter = () => {
   const [isFilterClicked, setIsFilterClicked] = useState(false);
 
   return (
-    <div className="flex items-center justify-between mb-4">
+    <div className="flex-between-center mb-4">
       <h2 className="text-xl font-bold text-gray-900">All Tasks</h2>
       
       <div className="relative">
         <button 
           onClick={() => setIsFilterClicked(!isFilterClicked)}
-          className={`flex items-center gap-2 px-3 py-2 border rounded-lg transition-all ${
+          className={`flex-hor-center gap-2 px-3 py-2 border rounded-lg transition-all ${
             isFilterClicked 
               ? "bg-blue-50 border-blue-500 text-blue-600 shadow-sm" 
               : "bg-white border-gray-300 hover:bg-gray-50 text-gray-700"
@@ -23,7 +23,7 @@ const TasksFilter = () => {
 
         {isFilterClicked && (
           <div className="absolute right-0 mt-2 z-30 w-64 bg-white border border-gray-200 rounded-xl shadow-xl p-4 animate-in fade-in zoom-in-95 duration-100 origin-top-right">
-            <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-100">
+            <div className="flex-between-center mb-3 pb-2 border-b border-gray-100">
               <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">Filters</span>
               <button 
                 onClick={() => setIsFilterClicked(false)}
@@ -36,7 +36,7 @@ const TasksFilter = () => {
             <form className="space-y-4">
               {/* Priority Section */}
               <div className="space-y-1.5">
-                <div className="flex items-center gap-2 text-gray-700 ml-1">
+                <div className="flex-hor-center gap-2 text-gray-700 ml-1">
                   <AlertCircle className="w-3.5 h-3.5 text-orange-500" />
                   <label className="text-xs font-semibold">Priority</label>
                 </div>
@@ -50,7 +50,7 @@ const TasksFilter = () => {
 
               {/* Status Section */}
               <div className="space-y-1.5">
-                <div className="flex items-center gap-2 text-gray-700 ml-1">
+                <div className="flex-hor-center gap-2 text-gray-700 ml-1">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                   <label className="text-xs font-semibold">Status</label>
                 </div>
@@ -64,7 +64,7 @@ const TasksFilter = () => {
 
               {/* Category */}
               <div className="space-y-1.5">
-                <div className="flex items-center gap-2 text-gray-700 ml-1">
+                <div className="flex-hor-center gap-2 text-gray-700 ml-1">
                   <Tag className="w-3.5 h-3.5 text-purple-500" />
                   <label className="text-xs font-semibold">Category</label>
                 </div>
@@ -79,7 +79,7 @@ const TasksFilter = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center gap-2 pt-2 mt-2 border-t border-gray-100">
+              <div className="flex-hor-center gap-2 pt-2 mt-2 border-t border-gray-100">
                 <button 
                   type="button"
                   onClick={() => setIsFilterClicked(false)}

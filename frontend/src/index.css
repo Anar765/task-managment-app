@@ -186,8 +186,38 @@
   }
 }
 
+@layer components {
+  .task-container {
+    @apply bg-white rounded-xl p-4 sm:p-6 border transition-all duration-200 hover:shadow-md cursor-pointer;
+  }
+
+  .stats-card {
+    @apply bg-white rounded-xl p-6 border border-gray-200;
+  }
+
+  .sidebar-category {
+    @apply w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors;
+  }
+
+  .select-styles {
+    @apply w-full text-sm bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 outline-none focus:ring-2 focus:ring-blue-500/10;
+  }
+}
+
 @layer utilities {
   .container-base {
     @apply max-w-7xl mx-auto px-4 md:px-6;
+  }
+
+  .flex-between-center {
+    @apply flex justify-between items-center;
+  }
+
+  .flex-hor-center {
+    @apply flex items-center;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
   }
 }

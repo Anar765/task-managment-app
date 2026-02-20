@@ -4,7 +4,7 @@ const NewTaskForm = ({ handleSubmit, setIsNewTaskFormOpen }:
                         setIsNewTaskFormOpen: (state: boolean) => void
                     }) => {
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm bg-black/30 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex-center p-4 backdrop-blur-sm bg-black/30 animate-in fade-in duration-200">
           <form 
             onSubmit={handleSubmit} 
             className="flex flex-col gap-5 p-8 bg-white rounded-2xl w-full max-w-md shadow-2xl border border-gray-100"
@@ -82,7 +82,7 @@ const NewTaskForm = ({ handleSubmit, setIsNewTaskFormOpen }:
             </div>
 
             {/* Buttons */}
-            <div className="flex items-center gap-3 mt-2">
+            <div className="flex-hor-center gap-3 mt-2">
               <button 
                 type="button"
                 onClick={() => setIsNewTaskFormOpen(false)}
