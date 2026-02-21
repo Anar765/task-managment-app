@@ -7,7 +7,7 @@ import { AppContext } from "../../App";
 const TaskCard = ({id, title, description, category, status, priority, date}: Task) => {
     // 1. State to handle toggle
     const [isExpanded, setIsExpanded] = useState(false);
-    const { user } = useContext(AppContext);
+    const { user, setTasks } = useContext(AppContext);
 
     const priorityStyles: Style = taskPriorityStyle(priority);
     const categoryStyles: Style = taskCategoryStyle(category);
@@ -24,6 +24,10 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
                     "Content-Type": "application/json"
                 }
             });
+
+            if(response.ok) {
+                setTasks((prevState) => prevState.filter(task => task.id !== id))
+            }
 
             const json = await response.json();
 

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage";
 import LoginPage from "./pages/Auth/LoginPage";
 import ResetPasswordPage from "./pages/Auth/ResetPasswordPage";
@@ -11,12 +11,14 @@ import type { Task } from "./types/tasks.type.ts";
 
 interface Context {
   tasks: Task[],
-  user: User | undefined
+  user: User | undefined,
+  setTasks: Dispatch<SetStateAction<Task[]>>
 }
 
 export const AppContext = createContext<Context>({
   tasks: [],
-  user: undefined
+  user: undefined,
+  setTasks: () => {}
 });
 
 const App = () => {
@@ -52,7 +54,7 @@ const App = () => {
   }, [user]);
 
   return (
-    <AppContext.Provider value={{ tasks, user }}>
+    <AppContext.Provider value={{ tasks, user, setTasks }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
