@@ -1,4 +1,4 @@
-import { Calendar, Tag, ChevronDown, ChevronUp } from "lucide-react";
+import { Calendar, Tag, ChevronDown, ChevronUp, Trash2, PencilLine } from "lucide-react";
 import { useState } from "react";
 import type { Task } from "../../types/tasks.type";
 import { taskCategoryStyle, taskIconStyle, taskPriorityStyle, type Style } from "../../util/getTaskStyles";
@@ -67,9 +67,20 @@ const TaskCard = ({title, description, category, status, priority, date}: Task) 
                             </div>
                         </div>
                         
-                        {/* Optional: Visual hint that the card can be toggled */}
-                        <div className="text-gray-300">
-                            {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                        <div className="flex items-center gap-2">
+
+                            <button aria-label="Edit task" className="bg-blue-600 rounded p-1">
+                                <PencilLine className="w-4 h-4 text-white" />
+                            </button>
+
+                            <button aria-label="Delete task" className="bg-red-600 rounded p-1">
+                                <Trash2 className="w-4 h-4 text-white" />
+                            </button>
+
+                            {/* Optional: Visual hint that the card can be toggled */}
+                            <div className="text-gray-500">
+                                {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                            </div>
                         </div>
                     </div>
                 </div>
