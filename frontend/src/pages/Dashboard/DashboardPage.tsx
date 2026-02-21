@@ -2,14 +2,24 @@ import Header from "../../components/Dashboard/Header";
 import SideBar from "../../components/Dashboard/SideBar";
 import StatsCards from "../../components/Dashboard/StatsCards";
 import TaskCards from "../../components/Dashboard/TaskCards";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Task } from "../../types/tasks.type";
 import NewTaskForm from "../../components/Dashboard/NewTaskForm";
 import TasksFilter from "../../components/Dashboard/TasksFilter";
+import type { User } from "../../types/user.type";
+import { useNavigate, useParams } from "react-router-dom";
 
-const DashboardPage = () => {
+const DashboardPage = ({ user } : { user: User | undefined }) => {
 
   const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(false);
+  const { username } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(user && username !== user.username) {
+      navigate('/');
+    }
+  }, [user, username]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
