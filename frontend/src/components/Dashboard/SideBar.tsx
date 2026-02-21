@@ -1,10 +1,9 @@
 import { useContext } from "react";
-import type { Task } from "../../types/tasks.type";
-import { TaskContext } from "../../App";
+import { AppContext } from "../../App";
 
 const SideBar = () => {
 
-    const tasks : Task[] = useContext(TaskContext);
+    const { tasks } = useContext(AppContext);
 
     const frontendTasks = tasks.filter((task) => task.category === "Frontend").length;
     const backendTasks = tasks.filter((task) => task.category === "Backend").length;

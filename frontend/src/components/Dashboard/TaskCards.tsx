@@ -1,17 +1,17 @@
 import TaskCard from "./TaskCard";
-import type { Task } from "../../types/tasks.type";
 import { useContext } from "react";
-import { TaskContext } from "../../App";
+import { AppContext } from "../../App";
 
 const TaskCards = () => {
 
-    const tasks : Task[] = useContext(TaskContext);
+    const { tasks } = useContext(AppContext);
 
     return (
         <>  
             {tasks.length !== 0 ? tasks.map((task) => {
                 return <TaskCard
                     key={task.id}
+                    id={task.id}
                     title={task.title}
                     description={task.description}
                     category={task.category}

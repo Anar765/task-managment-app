@@ -9,7 +9,15 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import type { User } from "./types/user.type.ts";
 import type { Task } from "./types/tasks.type.ts";
 
-export const TaskContext = createContext<Task[]>([]);
+interface Context {
+  tasks: Task[],
+  user: User | undefined
+}
+
+export const AppContext = createContext<Context>({
+  tasks: [],
+  user: undefined
+});
 
 const App = () => {
 
@@ -44,7 +52,7 @@ const App = () => {
   }, [user]);
 
   return (
-    <TaskContext.Provider value={tasks}>
+    <AppContext.Provider value={{ tasks, user }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -56,7 +64,7 @@ const App = () => {
           <Route path="*" element={<h1>Not Found</h1>}/>
         </Routes>
       </BrowserRouter>
-    </TaskContext.Provider>
+    </AppContext.Provider>
   );
 }
 

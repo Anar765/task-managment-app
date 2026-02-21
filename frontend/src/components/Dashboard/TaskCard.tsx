@@ -1,11 +1,13 @@
 import { Calendar, Tag, ChevronDown, ChevronUp, Trash2, PencilLine } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import type { Task } from "../../types/tasks.type";
 import { taskCategoryStyle, taskIconStyle, taskPriorityStyle, type Style } from "../../util/getTaskStyles";
+import { AppContext } from "../../App";
 
-const TaskCard = ({title, description, category, status, priority, date}: Task) => {
+const TaskCard = ({id, title, description, category, status, priority, date}: Task) => {
     // 1. State to handle toggle
     const [isExpanded, setIsExpanded] = useState(false);
+    const { user } = useContext(AppContext);
 
     const priorityStyles: Style = taskPriorityStyle(priority);
     const categoryStyles: Style = taskCategoryStyle(category);
@@ -13,6 +15,23 @@ const TaskCard = ({title, description, category, status, priority, date}: Task) 
 
     const isCompleted = status === "Completed";
     const isInProgress = status === "In progress";
+
+    const deleteTask = async() => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/delete/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            const json = await response.json();
+
+            console.log(json);
+        } catch(error) {
+            console.log(error);
+        }
+    };
 
     return (
         <div 
@@ -73,7 +92,7 @@ const TaskCard = ({title, description, category, status, priority, date}: Task) 
                                 <PencilLine className="w-4 h-4 text-white" />
                             </button>
 
-                            <button aria-label="Delete task" className="bg-red-600 rounded p-1">
+                            <button onClick={deleteTask} aria-label="Delete task" className="bg-red-600 rounded p-1">
                                 <Trash2 className="w-4 h-4 text-white" />
                             </button>
 

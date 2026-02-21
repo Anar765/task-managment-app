@@ -1,11 +1,10 @@
 import { Circle, Clock, CheckCircle2, AlertCircle } from "lucide-react";
-import type { Task } from "../../types/tasks.type";
 import { useContext } from "react";
-import { TaskContext } from "../../App";
+import { AppContext } from "../../App";
 
 const StatsCards = () => {
 
-  const tasks : Task[] = useContext(TaskContext);
+  const { tasks } = useContext(AppContext);
   const totalTasks = tasks.length;
   const inProgressTasks = tasks.filter((task) => task.status === "In progress").length;
   const CompletedTasks = tasks.filter((task) => task.status === "Completed").length;
