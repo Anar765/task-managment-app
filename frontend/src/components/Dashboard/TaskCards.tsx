@@ -1,38 +1,17 @@
 import TaskCard from "./TaskCard";
-import { useEffect, useState } from "react";
-import type { Task, TaskDTO } from "../../types/tasks.type";
+import type { Task } from "../../types/tasks.type";
+import { useContext } from "react";
+import { TaskContext } from "../../App";
 
 const TaskCards = () => {
 
-    const [tasks, setTasks] = useState<Task[]>([]);
-
-    useEffect(() => {
-        const getTasks = async () => {
-            try {
-                const response = await fetch("/tasksData.json");
-                if(!response.ok) {
-                    throw new Error("Fetch Error: can't fetch tasks data");
-                }
-                const data: TaskDTO[] = await response.json();
-                const tasks: Task[] = data.map((task: any) => ({
-                    ...task,
-                    date: new Date(task.date)
-                }));
-
-                setTasks(tasks)
-            } catch(err) {
-                console.log(err);
-            }
-        };
-
-        getTasks();
-    }, []);
+    const tasks : Task[] = useContext(TaskContext);
 
     return (
         <>  
-            {tasks.map((task, index) => {
+            {tasks.length !== 0 ? tasks.map((task) => {
                 return <TaskCard
-                    key={index}
+                    key={task.id}
                     title={task.title}
                     description={task.description}
                     category={task.category}
@@ -40,7 +19,9 @@ const TaskCards = () => {
                     priority={task.priority}
                     date={task.date}
                 />
-            })}
+            }) : 
+                <p className="text-center">You haven't created any tasks yet.</p>
+            }
         </>
     )
 }

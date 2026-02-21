@@ -3,10 +3,10 @@ import mongoose from "mongoose";
 
 const createTask = async(req, res) => {
     try {
-        const { title, description, category, status, difficulty, date } = req.body;
+        const { title, description, category, status, priority, date } = req.body;
         const { userId } = req.params;
 
-        if(!title || !description || !category || !status || !difficulty || !date) {
+        if(!title || !description || !category || !status || !priority || !date) {
             return res.status(400).json({
                 message: "All fields are important"
             });
@@ -17,7 +17,7 @@ const createTask = async(req, res) => {
             description,
             category,
             status,
-            difficulty,
+            priority,
             date,
             userId
         });
@@ -30,7 +30,7 @@ const createTask = async(req, res) => {
                 description: task.description,
                 category: task.category,
                 status: task.status,
-                difficulty: task.difficulty,
+                priority: task.priority,
                 date: task.date,
                 userId: task.userId
             }
@@ -55,7 +55,15 @@ const getTasks = async(req, res) => {
         }
 
         const tasks = await Task.find({ userId });
-        res.status(200).json(tasks);
+        res.status(200).json(tasks.map((task, _) => ({
+            id: task._id,
+            title: task.title,
+            description: task.description,
+            category: task.category,
+            status: task.status,
+            priority: task.priority,
+            date: task.date,
+        })));
     } catch(error) {
         res.status(500).json({
             error: error.message,

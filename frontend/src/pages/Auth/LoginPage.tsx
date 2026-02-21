@@ -5,8 +5,9 @@ import Footer from '../../components/Auth/Footer';
 import EmailField from '../../components/Auth/EmailField';
 import PasswordField from '../../components/Auth/PasswordField';
 import AuthOptions from '../../components/Auth/AuthOptions';
+import type { User } from '../../types/user.type.ts';
 
-const LoginPage = () => {
+const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
 
   const navigate = useNavigate();
 
@@ -18,8 +19,6 @@ const LoginPage = () => {
       email: target[0].value,
       password: target[1].value
     };
-
-    console.log(userData);
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/users/login`, {
@@ -35,6 +34,8 @@ const LoginPage = () => {
       }
 
       const data = await response.json();
+      localStorage.setItem("user", JSON.stringify(data.user));
+      setUser(data.user);
 
       navigate(`/dashboard/${data.user.username}`)
 

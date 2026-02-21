@@ -18,7 +18,7 @@ const taskSchema = new Schema.create(
             type: String,
             required: true
         },
-        difficulty: {
+        priority: {
             type: String,
             required: true
         },

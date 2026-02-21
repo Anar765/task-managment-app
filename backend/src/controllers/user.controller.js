@@ -67,6 +67,7 @@ const loginUser = async(req, res) => {
         res.status(202).json({
             message: "Welcome back",
             user: {
+                id: existing._id,
                 username: existing.username,
                 email
             }
