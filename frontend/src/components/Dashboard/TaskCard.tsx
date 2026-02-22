@@ -53,7 +53,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
         try {
             
 
-            const repsonse = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/update/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/update/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
@@ -61,7 +61,19 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
                 body: JSON.stringify(updatedTask)
             });
 
-            const json = await repsonse.json();
+            if (!response.ok) {
+                throw new Error(`Failed to update task: ${response.statusText}`);
+            }
+
+            const json = await response.json();
+
+            // Update the task in the state
+            setTasks((prevState) =>
+                prevState.map((task) => task.id === id ? updatedTask : task)
+            );
+
+            // Close the form
+            setIsUpdateTaskFormOpen(false);
 
             console.log(json);
         } catch (error) {

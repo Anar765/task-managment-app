@@ -4,7 +4,7 @@ const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { update
 
     return (
         <div className="fixed inset-0 z-50 flex-center p-4 backdrop-blur-sm bg-black/30 animate-in fade-in duration-200">
-            <form method="POST"
+            <form
                 onSubmit={updateTask} 
                 className="flex flex-col gap-5 p-8 bg-white rounded-2xl w-full max-w-md shadow-2xl border border-gray-100"
             >

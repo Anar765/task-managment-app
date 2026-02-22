@@ -45,6 +45,10 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
         body: JSON.stringify(task)
       });
 
+      if (!response.ok) {
+        throw new Error(`Failed to create task: ${response.statusText}`);
+      }
+
       const json = await response.json();
 
       setTasks((prevState) => [...prevState, task]);
