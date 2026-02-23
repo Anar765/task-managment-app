@@ -1,7 +1,8 @@
 import { Filter, AlertCircle, CheckCircle2, Tag } from "lucide-react";
 import { useState } from "react";
+import type { FilterParams } from "../../types/filterParams.type";
 
-const TasksFilter = () => {
+const TasksFilter = ({ filterParams, handleFilterParamsSubmit } : { filterParams: FilterParams, handleFilterParamsSubmit: (e: React.FormEvent<HTMLFormElement>) => void }) => {
   const [isFilterClicked, setIsFilterClicked] = useState(false);
 
   return (
@@ -33,18 +34,18 @@ const TasksFilter = () => {
               </button>
             </div>
 
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={(e) => {handleFilterParamsSubmit(e), setIsFilterClicked(false)}}>
               {/* Priority Section */}
               <div className="space-y-1.5">
                 <div className="flex-hor-center gap-2 text-gray-700 ml-1">
                   <AlertCircle className="w-3.5 h-3.5 text-orange-500" />
                   <label className="text-xs font-semibold">Priority</label>
                 </div>
-                <select name="priority" className="w-full text-sm bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 outline-none focus:ring-2 focus:ring-blue-500/10">
+                <select defaultValue={filterParams.priority} name="priority" className="w-full text-sm bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 outline-none focus:ring-2 focus:ring-blue-500/10">
                   <option value="">All Priorities</option>
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
                 </select>
               </div>
 
@@ -54,11 +55,11 @@ const TasksFilter = () => {
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                   <label className="text-xs font-semibold">Status</label>
                 </div>
-                <select name="status" className="w-full text-sm bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 outline-none focus:ring-2 focus:ring-blue-500/10">
+                <select defaultValue={filterParams.status} name="status" className="w-full text-sm bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 outline-none focus:ring-2 focus:ring-blue-500/10">
                   <option value="">All Statuses</option>
-                  <option value="not-started">Not started</option>
-                  <option value="in-progress">In progress</option>
-                  <option value="completed">Completed</option>
+                  <option value="Not started">Not started</option>
+                  <option value="In progress">In progress</option>
+                  <option value="Completed">Completed</option>
                 </select>
               </div>
 
@@ -68,13 +69,13 @@ const TasksFilter = () => {
                   <Tag className="w-3.5 h-3.5 text-purple-500" />
                   <label className="text-xs font-semibold">Category</label>
                 </div>
-                <select className="w-full text-sm bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500">
+                <select defaultValue={filterParams.category} name="category" className="w-full text-sm bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500">
                   <option value="">All Categories</option>
-                  <option value="frontend">Frontend</option>
-                  <option value="backend">Backend</option>
-                  <option value="database">Database</option>
-                  <option value="devops">DevOps</option>
-                  <option value="testing">Testing</option>
+                  <option value="Frontend">Frontend</option>
+                  <option value="Backend">Backend</option>
+                  <option value="Database">Database</option>
+                  <option value="DevOps">DevOps</option>
+                  <option value="Testing">Testing</option>
                 </select>
               </div>
 

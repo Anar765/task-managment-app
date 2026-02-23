@@ -9,14 +9,20 @@ import TasksFilter from "../../components/Dashboard/TasksFilter";
 import type { User } from "../../types/user.type";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../../App";
+import type { FilterParams } from "../../types/filterParams.type";
 
 const DashboardPage = ({ user } : { user: User | undefined }) => {
-
-  const [searchTask, setSearchTask] = useState("");
-  const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(false);
   const { username } = useParams();
   const navigate = useNavigate();
   const { setTasks } = useContext(AppContext);
+
+  const [searchTask, setSearchTask] = useState("");
+  const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(false);
+  const [filterParams, setFilterParams] = useState<FilterParams>({
+    priority: "",
+    status: "",
+    category: ""
+  });
 
   useEffect(() => {
     if(user && username !== user.username) {
@@ -60,6 +66,20 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
     }
   }
 
+  const handleFilterParamsSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    const filter: FilterParams = {
+      priority: formData.get('priority') as string,
+      status: formData.get('status') as string,
+      category: formData.get('category') as string
+    };
+
+    setFilterParams(filter);
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 relative">
 
@@ -71,8 +91,8 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content - Task List */}
           <div className="lg:col-span-2 space-y-4">
-            <TasksFilter />
-            <TaskCards searchTask={searchTask} />
+            <TasksFilter filterParams={filterParams} handleFilterParamsSubmit={handleFilterParamsSubmit} />
+            <TaskCards searchTask={searchTask} filterParams={filterParams} />
           </div>
 
           <SideBar />
