@@ -61,7 +61,7 @@ const NewTaskForm = ({ handleSubmit, setIsNewTaskFormOpen }: { handleSubmit: (e:
               <select name="priority" id="priority" className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white transition-all appearance-none cursor-pointer">
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
-                <option value="Hard">Hard</option>
+                <option value="High">High</option>
               </select>
             </div>
 
