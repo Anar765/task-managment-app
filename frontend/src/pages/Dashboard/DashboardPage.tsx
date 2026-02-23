@@ -12,6 +12,7 @@ import { AppContext } from "../../App";
 
 const DashboardPage = ({ user } : { user: User | undefined }) => {
 
+  const [searchTask, setSearchTask] = useState("");
   const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(false);
   const { username } = useParams();
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
   return (
     <div className="min-h-screen bg-gray-50 relative">
 
-      <Header setIsNewTaskFormOpen={setIsNewTaskFormOpen} />
+      <Header setIsNewTaskFormOpen={setIsNewTaskFormOpen} setSearchTask={setSearchTask} />
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">        
         <StatsCards />
@@ -71,7 +72,7 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
           {/* Main Content - Task List */}
           <div className="lg:col-span-2 space-y-4">
             <TasksFilter />
-            <TaskCards />
+            <TaskCards searchTask={searchTask} />
           </div>
 
           <SideBar />

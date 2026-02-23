@@ -1,6 +1,6 @@
 import { Search, CheckCircle2, Plus } from 'lucide-react';
 
-const Header = ({ setIsNewTaskFormOpen } : { setIsNewTaskFormOpen: (state: boolean) => void }) => {
+const Header = ({ setIsNewTaskFormOpen, setSearchTask } : { setIsNewTaskFormOpen: (state: boolean) => void, setSearchTask: (state: string) => void }) => {
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
@@ -24,6 +24,7 @@ const Header = ({ setIsNewTaskFormOpen } : { setIsNewTaskFormOpen: (state: boole
               <input
                 type="text"
                 placeholder="Search..."
+                onChange={(e) => setSearchTask(e.currentTarget.value)}
                 className="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
               />
             </div>
