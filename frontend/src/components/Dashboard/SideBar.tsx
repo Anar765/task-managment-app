@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AppContext } from "../../App";
+import getTasksCompletionPercentage from "../../util/getTasksCompletionPercentage";
 
 const SideBar = () => {
 
@@ -10,7 +11,8 @@ const SideBar = () => {
     const databaseTasks = tasks.filter((task) => task.category === "Database").length;
     const devOpsTasks = tasks.filter((task) => task.category === "DevOps").length;
     const testingTasks = tasks.filter((task) => task.category === "Testing").length;
-
+    const completedTasks = tasks.filter((task) => task.status === "Completed").length;
+    const totalTasks = tasks.length;
 
     return (
         <>
@@ -65,9 +67,9 @@ const SideBar = () => {
                 {/* Quick Stats */}
                 <div className="bg-linear-to-br from-indigo-600 to-purple-600 rounded-xl p-6 text-white">
                     <h3 className="font-semibold mb-2">Today's Progress</h3>
-                    <p className="text-3xl font-bold mb-4">58%</p>
+                    <p className="text-3xl font-bold mb-4">{getTasksCompletionPercentage(completedTasks, totalTasks)}%</p>
                     <p className="text-sm text-indigo-100">
-                    You've completed 7 out of 12 tasks scheduled for today. Keep up the great work!
+                    You've completed {completedTasks} out of {totalTasks} tasks scheduled for today. Keep up the great work!
                     </p>
                 </div>
             </div>
