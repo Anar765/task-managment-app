@@ -60,6 +60,7 @@ const TasksFilter = ({ filterParams, handleFilterParamsSubmit } : { filterParams
                   <option value="Not started">Not started</option>
                   <option value="In progress">In progress</option>
                   <option value="Completed">Completed</option>
+                  <option value="Overdue">Overdue</option>
                 </select>
               </div>
 
