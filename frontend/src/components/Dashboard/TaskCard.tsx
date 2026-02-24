@@ -5,11 +5,19 @@ import { taskCategoryStyle, taskIconStyle, taskPriorityStyle, type Style } from 
 import { AppContext } from "../../App";
 import UpdateTaskForm from "./UpdateTaskForm";
 
+const nextStep = {
+    "Not started": "In progress",
+    "In progress": "Completed",
+    "Completed": "Not started"
+}
+
 const TaskCard = ({id, title, description, category, status, priority, date}: Task) => {
+    const ellipse = new Date().getTime() - date.getTime();
+    const { user, setTasks } = useContext(AppContext);
+
     // 1. State to handle toggle
     const [isExpanded, setIsExpanded] = useState(false);
     const [isUpdateTestFormOpen, setIsUpdateTaskFormOpen] = useState(false);
-    const { user, setTasks } = useContext(AppContext);
 
     const priorityStyles: Style = taskPriorityStyle(priority);
     const categoryStyles: Style = taskCategoryStyle(category);
@@ -51,8 +59,6 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
             date: new Date(formData.get("date") as string)
         };
         try {
-            
-
             const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/update/${id}`, {
                 method: "PATCH",
                 headers: {
@@ -81,6 +87,45 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
         }
     }
 
+    const toggleStatus = async() => {
+
+        let newStatus: string;
+
+        // Logic: If it's late and Not Started, it becomes Overdue.
+        // Otherwise, follow the normal cycle.
+        if (ellipse > 0) {
+            newStatus = "Overdue";
+        } else {
+            newStatus = nextStep[status as keyof typeof nextStep] || "Not started";
+        }
+
+        const taskWithNewStatus: Task = { id, title, description, status: newStatus, category, priority, date };
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/update/${id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(taskWithNewStatus)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to update task: ${response.statusText}`);
+            }
+
+            const json = await response.json();
+            console.log(json);
+
+            // Update the task in the state
+            setTasks((prevState) =>
+                prevState.map((task) => task.id === id ? taskWithNewStatus : task)
+            );
+        } catch (error) {
+            console.log("Status Update failed: ", error);
+        }
+    }
+
     return (
         <>
             <div 
@@ -92,7 +137,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
                 `}
             >
                 <div className="flex items-start gap-3 sm:gap-4">
-                    <button className="mt-1 shrink-0">
+                    <button onClick={(e) => {e.stopPropagation(), toggleStatus()}} className="mt-1 shrink-0">
                         <Icon className={`w-5 h-5 ${styles}`} />
                     </button>
 
@@ -124,7 +169,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
                                 <div className="flex-hor-center gap-1">
                                     <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                     <span>
-                                        {isCompleted ? "Done" : "Due"}: {date.toLocaleString("en-US", { month: "short", day: "numeric" })}
+                                        {isCompleted ? "Done" : (ellipse < 0 ? "Due" : "Overdue")}: {date.toLocaleString("en-US", { month: "short", day: "numeric" })}
                                     </span>
                                 </div>
                                 <div className="flex-hor-center gap-1">
@@ -137,11 +182,11 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
                             
                             <div className="flex items-center gap-2">
 
-                                <button onClick={() => setIsUpdateTaskFormOpen(true)} aria-label="Edit task" className="bg-blue-600 rounded p-1">
+                                <button onClick={(e) => {e.stopPropagation(), setIsUpdateTaskFormOpen(true)}} aria-label="Edit task" className="bg-blue-600 rounded p-1">
                                     <PencilLine className="w-4 h-4 text-white" />
                                 </button>
 
-                                <button onClick={deleteTask} aria-label="Delete task" className="bg-red-600 rounded p-1">
+                                <button onClick={(e) => {e.stopPropagation(), deleteTask()}} aria-label="Delete task" className="bg-red-600 rounded p-1">
                                     <Trash2 className="w-4 h-4 text-white" />
                                 </button>
 
