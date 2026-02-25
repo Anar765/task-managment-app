@@ -1,6 +1,11 @@
-import type { Task } from "../../types/tasks.type"
+import type { Task } from "../../types/tasks.type";
+import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 
 const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { updateTask: (e: React.FormEvent<HTMLFormElement>) => void, setIsUpdateTaskFormOpen: (state: boolean) => void, task: Task }) => {
+
+    const [priorityDropdown, setPriorityDropdown] = useState(false);
+    const [categoryDropdown, setCategoryDropdown] = useState(false);
 
     return (
         <div className="fixed inset-0 z-50 flex-center p-4 backdrop-blur-sm bg-black/30 animate-in fade-in duration-200">
@@ -42,31 +47,44 @@ const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { update
                 {/* Category Section */}
                 <div className="flex flex-col gap-1.5">
                     <label htmlFor="category" className="text-sm font-medium text-gray-700">Category</label>
-                    <select 
-                    name="category" 
-                    id="category" 
-                    defaultValue={task.category}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white transition-all appearance-none cursor-pointer"
-                    required
-                    >
-                        <option value="" disabled>Select a category</option>
-                        <option value="Frontend">Frontend</option>
-                        <option value="Backend">Backend</option>
-                        <option value="Database">Database</option>
-                        <option value="DevOps">DevOps</option>
-                        <option value="Testing">Testing</option>
-                    </select>
+                    <div className="relative">
+                        <select 
+                        name="category"
+                        id="category"
+                        onClick={() => setCategoryDropdown(prevState => !prevState)}
+                        defaultValue={task.category}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white transition-all appearance-none cursor-pointer"
+                        required
+                        >
+                            <option value="" disabled>Select a category</option>
+                            <option value="Frontend">Frontend</option>
+                            <option value="Backend">Backend</option>
+                            <option value="Database">Database</option>
+                            <option value="DevOps">DevOps</option>
+                            <option value="Testing">Testing</option>
+                        </select>
+                        <ChevronDown className={`chevron-select-styles ${categoryDropdown ? "rotate-180" : "rotate-0"}`}/>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                     {/* Priority */}
                     <div className="flex flex-col gap-1.5">
                         <label htmlFor="priority" className="text-sm font-medium text-gray-700">Priority</label>
-                        <select defaultValue={task.priority} name="priority" id="priority" className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white transition-all appearance-none cursor-pointer">
-                            <option value="Low">Low</option>
-                            <option value="Medium">Medium</option>
-                            <option value="High">High</option>
-                        </select>
+                        <div className="relative">
+                            <select 
+                                defaultValue={task.priority}
+                                name="priority"
+                                id="priority"
+                                onClick={() => setPriorityDropdown(prevState => !prevState)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white transition-all appearance-none cursor-pointer"
+                            >
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                            <ChevronDown className={`chevron-select-styles ${priorityDropdown ? "rotate-180" : "rotate-0"}`}/>
+                        </div>
                     </div>
 
                     {/* Due Date */}
