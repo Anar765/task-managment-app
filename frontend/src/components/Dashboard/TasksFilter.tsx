@@ -2,8 +2,17 @@ import { Filter, AlertCircle, CheckCircle2, Tag } from "lucide-react";
 import { useState } from "react";
 import type { FilterParams } from "../../types/filterParams.type";
 
-const TasksFilter = ({ filterParams, handleFilterParamsSubmit } : { filterParams: FilterParams, handleFilterParamsSubmit: (e: React.FormEvent<HTMLFormElement>) => void }) => {
+const TasksFilter = ({ filterParams, setFilterParams, handleFilterParamsSubmit } : { filterParams: FilterParams, setFilterParams: (state: FilterParams) => void,handleFilterParamsSubmit: (e: React.FormEvent<HTMLFormElement>) => void }) => {
   const [isFilterClicked, setIsFilterClicked] = useState(false);
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+
+    setFilterParams({
+      ...filterParams,
+      [name]: value
+    });
+  };
 
   return (
     <div className="flex-between-center mb-4">
@@ -27,7 +36,7 @@ const TasksFilter = ({ filterParams, handleFilterParamsSubmit } : { filterParams
             <div className="flex-between-center mb-3 pb-2 border-b border-gray-100">
               <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">Filters</span>
               <button 
-                onClick={() => setIsFilterClicked(false)}
+                onClick={() => setFilterParams({priority: "", status: "", category: ""})}
                 className="text-xs text-blue-600 hover:underline"
               >
                 Reset
@@ -41,7 +50,7 @@ const TasksFilter = ({ filterParams, handleFilterParamsSubmit } : { filterParams
                   <AlertCircle className="w-3.5 h-3.5 text-orange-500" />
                   <label className="text-xs font-semibold">Priority</label>
                 </div>
-                <select defaultValue={filterParams.priority} name="priority" className="w-full text-sm bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 outline-none focus:ring-2 focus:ring-blue-500/10">
+                <select onChange={handleSelectChange} value={filterParams.priority} name="priority" className="w-full text-sm bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 outline-none focus:ring-2 focus:ring-blue-500/10">
                   <option value="">All Priorities</option>
                   <option value="Low">Low</option>
                   <option value="Medium">Medium</option>
@@ -55,7 +64,7 @@ const TasksFilter = ({ filterParams, handleFilterParamsSubmit } : { filterParams
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                   <label className="text-xs font-semibold">Status</label>
                 </div>
-                <select defaultValue={filterParams.status} name="status" className="w-full text-sm bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 outline-none focus:ring-2 focus:ring-blue-500/10">
+                <select onChange={handleSelectChange} value={filterParams.status} name="status" className="w-full text-sm bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 outline-none focus:ring-2 focus:ring-blue-500/10">
                   <option value="">All Statuses</option>
                   <option value="Not started">Not started</option>
                   <option value="In progress">In progress</option>
@@ -70,7 +79,7 @@ const TasksFilter = ({ filterParams, handleFilterParamsSubmit } : { filterParams
                   <Tag className="w-3.5 h-3.5 text-purple-500" />
                   <label className="text-xs font-semibold">Category</label>
                 </div>
-                <select defaultValue={filterParams.category} name="category" className="w-full text-sm bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500">
+                <select onChange={handleSelectChange} value={filterParams.category} name="category" className="w-full text-sm bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500">
                   <option value="">All Categories</option>
                   <option value="Frontend">Frontend</option>
                   <option value="Backend">Backend</option>
