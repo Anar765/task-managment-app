@@ -38,7 +38,7 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
       const task: Task = {
         title: formData.get("title") as string,
         description: formData.get("description") as string,
-        status: "Not completed",
+        status: "Not started",
         priority: formData.get("priority") as string,
         category: formData.get("category") as string,
         date: new Date(formData.get("date") as string)
