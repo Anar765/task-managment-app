@@ -31,6 +31,7 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
   }, [user, username]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
     try {
       const formData = new FormData(e.currentTarget)
@@ -59,6 +60,8 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
       const json = await response.json();
 
       setTasks((prevState) => [...prevState, task]);
+
+      setIsNewTaskFormOpen(false);
 
       console.log(json);
     } catch(error) {
