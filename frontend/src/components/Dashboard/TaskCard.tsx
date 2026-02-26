@@ -25,6 +25,8 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
 
     const isCompleted = status === "Completed";
     const isInProgress = status === "In progress";
+    const isPastDeadline = ellipse > 0;
+    const isOverdue = isPastDeadline || status === "Overdue";
 
     const deleteTask = async() => {
         try {
@@ -53,7 +55,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
         const updatedTask: Task = {
             title: formData.get("title") as string,
             description: formData.get("description") as string,
-            status: "Not completed",
+            status,
             priority: formData.get("priority") as string,
             category: formData.get("category") as string,
             date: new Date(formData.get("date") as string)
@@ -94,7 +96,11 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
         // Logic: If it's late and Not Started, it becomes Overdue.
         // Otherwise, follow the normal cycle.
         if (ellipse > 0) {
-            newStatus = "Overdue";
+            if(status !== "Completed") {
+                newStatus = "Overdue";
+            } else {
+                newStatus = "Completed";
+            }
         } else {
             newStatus = nextStep[status as keyof typeof nextStep] || "Not started";
         }
@@ -137,7 +143,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
                 `}
             >
                 <div className="flex items-start gap-3 sm:gap-4">
-                    <button onClick={(e) => {e.stopPropagation(), toggleStatus()}} className="mt-1 shrink-0">
+                    <button onClick={(e) => {e.stopPropagation(), toggleStatus()}} disabled={isOverdue || (isPastDeadline && isCompleted)} className="mt-1 shrink-0">
                         <Icon className={`w-5 h-5 ${styles}`} />
                     </button>
 
