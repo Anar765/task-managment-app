@@ -13,7 +13,7 @@ const nextStep = {
 
 const TaskCard = ({id, title, description, category, status, priority, date}: Task) => {
     const ellipse = new Date().getTime() - date.getTime();
-    const { user, setTasks } = useContext(AppContext);
+    const { user, setTasks, setResponse } = useContext(AppContext);
 
     // 1. State to handle toggle
     const [isExpanded, setIsExpanded] = useState(false);
@@ -42,7 +42,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
             }
 
             const json = await response.json();
-
+            setResponse(json.message);
             console.log(json);
         } catch(error) {
             console.log(error);
@@ -84,7 +84,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
 
             // Close the form
             setIsUpdateTaskFormOpen(false);
-
+            setResponse(json.message);
             console.log(json);
         } catch (error) {
             console.log(error);
@@ -123,6 +123,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
             }
 
             const json = await response.json();
+            setResponse(json.message);
             console.log(json);
 
             // Update the task in the state

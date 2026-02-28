@@ -14,7 +14,9 @@ interface Context {
   user: User | undefined,
   setTasks: Dispatch<SetStateAction<Task[]>>,
   isDarkMode: boolean,
-  setIsDarkMode: Dispatch<SetStateAction<boolean>>
+  setIsDarkMode: Dispatch<SetStateAction<boolean>>,
+  response: string,
+  setResponse: Dispatch<SetStateAction<string>>
 }
 
 export const AppContext = createContext<Context>({
@@ -22,7 +24,9 @@ export const AppContext = createContext<Context>({
   user: undefined,
   setTasks: () => {},
   isDarkMode: false,
-  setIsDarkMode: () => {}
+  setIsDarkMode: () => {},
+  response: "",
+  setResponse: () => {}
 });
 
 const App = () => {
@@ -33,6 +37,7 @@ const App = () => {
   });
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [response, setResponse] = useState("");
 
   useEffect(() => {
     const getTasks = async () => {
@@ -59,7 +64,7 @@ const App = () => {
   }, [user]);
 
   return (
-    <AppContext.Provider value={{ tasks, user, setTasks, isDarkMode, setIsDarkMode }}>
+    <AppContext.Provider value={{ tasks, user, setTasks, isDarkMode, setIsDarkMode, response, setResponse }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />

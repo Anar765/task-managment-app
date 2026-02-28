@@ -10,11 +10,12 @@ import type { User } from "../../types/user.type";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../../App";
 import type { FilterParams } from "../../types/filterParams.type";
+import Notification from "../../components/ui/Notification";
 
 const DashboardPage = ({ user } : { user: User | undefined }) => {
   const { username } = useParams();
   const navigate = useNavigate();
-  const { setTasks } = useContext(AppContext);
+  const { setTasks, setResponse } = useContext(AppContext);
 
   const [searchTask, setSearchTask] = useState("");
   const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(false);
@@ -60,7 +61,7 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
       const json = await response.json();
 
       setTasks((prevState) => [...prevState, task]);
-
+      setResponse(json.message);
       setIsNewTaskFormOpen(false);
 
       console.log(json);
@@ -85,7 +86,7 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
 
   return (
     <div className="min-h-screen bg-gray-50 relative">
-
+      <Notification />
       <Header setIsNewTaskFormOpen={setIsNewTaskFormOpen} setSearchTask={setSearchTask} />
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">        
