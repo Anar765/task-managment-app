@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CheckCircle2, Menu, X } from "lucide-react"; // Added Menu and X
 import { Link } from "react-router-dom";
+import ThemeToggle from "../ui/ThemeToggle";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,6 +32,7 @@ const Navbar = () => {
             <Link to="/signup" className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-all shadow-sm">
               Get Started
             </Link>
+            <ThemeToggle />
           </div>
 
           {/* Mobile Menu Button */}

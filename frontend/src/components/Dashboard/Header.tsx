@@ -1,4 +1,5 @@
 import { Search, CheckCircle2, Plus } from 'lucide-react';
+import ThemeToggle from '../ui/ThemeToggle';
 
 const Header = ({ setIsNewTaskFormOpen, setSearchTask } : { setIsNewTaskFormOpen: (state: boolean) => void, setSearchTask: (state: string) => void }) => {
   return (
@@ -34,6 +35,8 @@ const Header = ({ setIsNewTaskFormOpen, setSearchTask } : { setIsNewTaskFormOpen
               <Plus className="w-5 h-5" />
               <span className="hidden sm:inline">New Task</span>
             </button>
+
+            <ThemeToggle />
           </div>
         </div>
       </div>

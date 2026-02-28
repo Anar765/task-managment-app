@@ -12,13 +12,17 @@ import type { Task } from "./types/tasks.type.ts";
 interface Context {
   tasks: Task[],
   user: User | undefined,
-  setTasks: Dispatch<SetStateAction<Task[]>>
+  setTasks: Dispatch<SetStateAction<Task[]>>,
+  isDarkMode: boolean,
+  setIsDarkMode: Dispatch<SetStateAction<boolean>>
 }
 
 export const AppContext = createContext<Context>({
   tasks: [],
   user: undefined,
-  setTasks: () => {}
+  setTasks: () => {},
+  isDarkMode: false,
+  setIsDarkMode: () => {}
 });
 
 const App = () => {
@@ -28,6 +32,7 @@ const App = () => {
     return savedUser ? JSON.parse(savedUser) : undefined;
   });
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const getTasks = async () => {
@@ -54,7 +59,7 @@ const App = () => {
   }, [user]);
 
   return (
-    <AppContext.Provider value={{ tasks, user, setTasks }}>
+    <AppContext.Provider value={{ tasks, user, setTasks, isDarkMode, setIsDarkMode }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
