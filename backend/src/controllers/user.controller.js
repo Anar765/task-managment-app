@@ -6,7 +6,7 @@ const registerUser = async (req, res) => {
 
         if(!username || !email || !role || !password) {
             return res.status(400).json({
-                message: "All fields are important"
+                message: "Please provide username, email, role, and password"
             });
         }
 
@@ -14,7 +14,7 @@ const registerUser = async (req, res) => {
 
         if(existing) {
             return res.status(400).json({
-                message: "User already exists",
+                message: "An account with this email already exists",
                 user
             });
         }
@@ -28,14 +28,14 @@ const registerUser = async (req, res) => {
         });
 
         res.status(201).json({
-            message: "User registered",
+            message: "Account successfully created.",
             user: {id: user._id, email: user.email, username: user.username, role: user.role}
         });
 
     } catch(error) {
         res.status(500).json({
             error: error.message,
-            message: "Internal Server Error"
+            message: "Something went wrong while creating the account"
         })
     }
 }
@@ -46,7 +46,7 @@ const loginUser = async(req, res) => {
 
         if(!email || !password) {
             return res.status(400).json({
-                message: "All fields are important"
+                message: "Please provide both email and password"
             })
         }
 
@@ -54,18 +54,18 @@ const loginUser = async(req, res) => {
 
         if(!existing) {
             return res.status(404).json({
-                message: "User is not registered"
+                message: "No account found with this email"
             });
         }
 
         if(existing.password !== password) {
             return res.status(403).json({
-                message: "Password is incorrect"
+                message: "Invalid email or password"
             });
         }
 
         res.status(202).json({
-            message: "Welcome back",
+            message: "Login successful",
             user: {
                 id: existing._id,
                 username: existing.username,
@@ -76,7 +76,7 @@ const loginUser = async(req, res) => {
     } catch(error) {
         res.status(500).json({
             error: error.message,
-            message: "Internal Server Error"
+            message: "Something went wrong while logging in"
         })
     }
 }
