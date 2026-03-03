@@ -6,37 +6,48 @@ import EmailField from '../../components/Auth/EmailField';
 import PasswordField from '../../components/Auth/PasswordField';
 import AuthOptions from '../../components/Auth/AuthOptions';
 import type { User } from '../../types/user.type.ts';
+import { useForm } from 'react-hook-form';
+import { useContext } from 'react';
+import { AppContext } from '../../App.tsx';
 
 const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
 
+  const { response, setResponse } = useContext(AppContext)
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+  } = useForm({ mode: "onBlur" });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const target = e.target as any;
+  const handleUserLogin = async (userData: any) => {
+    // e.preventDefault();
+    // const target = e.target as any;
 
-    const userData = {
-      email: target[0].value,
-      password: target[1].value
-    };
+    // const userData = {
+    //   email: target[0].value,
+    //   password: target[1].value
+    // };
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/users/login`, {
+      const userLoginResponse = await fetch(`${import.meta.env.VITE_API_URL}/users/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(userData)
       });
+      
+      const data = await userLoginResponse.json();
 
-      if(!response.ok) {
-        throw new Error(`status code - ${response.status}, message - ${response.statusText}`);
+      if(!userLoginResponse.ok) {
+        console.log(data)
+        setResponse(data.message);
+        throw new Error(`status code - ${userLoginResponse.status}, message - ${userLoginResponse.statusText}`);
       }
 
-      const data = await response.json();
       localStorage.setItem("user", JSON.stringify(data.user));
+      setResponse("");
       setUser(data.user);
-
       navigate(`/dashboard/${data.user.username}`)
 
     } catch (error) {
@@ -60,9 +71,10 @@ const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
             </div>
 
             {/* Login Form */}
-            <form className="space-y-5" onSubmit={handleSubmit}>
-              <EmailField />
-              <PasswordField title='Password' />
+            <form className="space-y-5" onSubmit={handleSubmit(handleUserLogin)}>
+              <EmailField {...register("email")} />
+              <PasswordField title='Password' {...register("password")} />
+              {response && <p className='text-red-600'>{response}</p>}
               <AuthOptions />
 
               {/* Submit Button */}

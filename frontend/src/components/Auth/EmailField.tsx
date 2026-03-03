@@ -1,6 +1,7 @@
 import { Mail } from "lucide-react";
+import { forwardRef, type ComponentPropsWithRef } from "react";
 
-const EmailField = () => {
+const EmailField = forwardRef<HTMLInputElement, ComponentPropsWithRef<"input">>(({ ...props }, ref) => {
   return (
     <>
         {/* Email Field */}
@@ -11,6 +12,8 @@ const EmailField = () => {
             <div className="relative">
                 <Mail className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
+                ref={ref}
+                {...props}
                 id="email"
                 type="email"
                 placeholder="developer@example.com"
@@ -20,6 +23,6 @@ const EmailField = () => {
         </div>
     </>
   )
-}
+})
 
 export default EmailField

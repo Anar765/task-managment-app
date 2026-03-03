@@ -8,35 +8,46 @@ import FullNameField from '../../components/Auth/FullNameField';
 import ConfirmPasswordField from '../../components/Auth/ConfirmPasswordField';
 import RoleAndPositionField from '../../components/Auth/RoleAndPositionField';
 import TermsAndConditions from '../../components/Auth/TermsAndConditions';
+import { useForm } from 'react-hook-form';
+import { useContext } from 'react';
+import { AppContext } from '../../App';
 
 const SignUpPage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { response, setResponse } = useContext(AppContext);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {    
+  const {
+    register,
+    handleSubmit
+  } = useForm();
+
+  const handleUserSignUpSubmit = async (newUserData: any) => {    
     // 1. Get data from form targets
-    const target = e.target as any;
-    const userData = {
-      username: target[0].value,
-      email: target[1].value,
-      role: target[2].value,
-      password: target[3].value
-    };
+    // const target = e.target as any;
+    // const userData = {
+    //   username: target[0].value,
+    //   email: target[1].value,
+    //   role: target[2].value,
+    //   password: target[3].value
+    // };
 
     try {
       // 2. Perform the POST request directly here
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/users/register`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/register`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData)
+        body: JSON.stringify(newUserData)
       });
 
-      if (!response.ok) {
-        throw new Error(`Status: ${response.status}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        setResponse(data.message);
+        throw new Error(`Status: ${res.status}`);
       }
 
-      const data = await response.json();
       console.log("Success:", data);
 
       // 3. Navigate using the INTERNAL path
@@ -63,12 +74,13 @@ const SignUpPage = () => {
             </div>
 
             {/* Signup Form */}
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              <FullNameField />
-              <EmailField />
-              <RoleAndPositionField />
-              <PasswordField title='Password' />
-              <ConfirmPasswordField title='Confirm password' />              
+            <form className="space-y-4" onSubmit={handleSubmit(handleUserSignUpSubmit)}>
+              <FullNameField {...register("fullName")} />
+              <EmailField {...register("email")} />
+              <RoleAndPositionField {...register("role")} />
+              <PasswordField title='Password' {...register("password")} />
+              <ConfirmPasswordField title='Confirm password' {...register("confirm-password")} />
+              {response && <p className='text-red-600'>{response}</p>}
               <TermsAndConditions />
               
               {/* Submit Button */}

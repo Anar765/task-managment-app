@@ -1,6 +1,7 @@
 import { Briefcase } from "lucide-react";
+import { forwardRef, type ComponentPropsWithRef } from "react";
 
-const RoleAndPositionField = () => {
+const RoleAndPositionField = forwardRef<HTMLSelectElement, ComponentPropsWithRef<"select">>(({...props}, ref) => {
     return (
         <>
             {/* Role/Position Field */}
@@ -12,6 +13,8 @@ const RoleAndPositionField = () => {
                     <Briefcase className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                     <select
                     id="role"
+                    ref={ref}
+                    {...props}
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent appearance-none bg-white"
                     >
                     <option value="">Select your role...</option>
@@ -26,6 +29,6 @@ const RoleAndPositionField = () => {
             </div>
         </>
     )
-}
+})
 
 export default RoleAndPositionField

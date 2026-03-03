@@ -1,7 +1,11 @@
 import { Lock, EyeOff, Eye } from "lucide-react";
-import { useState } from "react";
+import { forwardRef, useState, type ComponentPropsWithRef } from "react";
 
-const PasswordField = ({ title, setPassword }: { title: string, setPassword?: (state: string) => void }) => {
+interface PasswordFieldProps extends ComponentPropsWithRef<"input"> {
+    title: string,
+}
+
+const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(({ title, ...props } : { title: string }, ref) => {
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -16,8 +20,9 @@ const PasswordField = ({ title, setPassword }: { title: string, setPassword?: (s
                 <Lock className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                 id="password"
+                ref={ref}
+                {...props}
                 type={showPassword ? "text" : "password"}
-                onChange={(e) => setPassword?.(e.target.value)}
                 placeholder="••••••••"
                 className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 />
@@ -32,6 +37,6 @@ const PasswordField = ({ title, setPassword }: { title: string, setPassword?: (s
             </div>
         </>
     )
-}
+})
 
 export default PasswordField
