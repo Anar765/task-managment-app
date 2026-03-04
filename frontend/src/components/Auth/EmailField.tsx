@@ -17,7 +17,7 @@ const EmailField = forwardRef<HTMLInputElement, ComponentPropsWithRef<"input">>(
                 id="email"
                 type="email"
                 placeholder="developer@example.com"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 invalid:focus:ring-red-600 focus:border-transparent"
                 />
             </div>
         </div>

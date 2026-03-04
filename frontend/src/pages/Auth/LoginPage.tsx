@@ -17,6 +17,7 @@ const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
   const {
     register,
     handleSubmit,
+    formState: { errors }
   } = useForm({ mode: "onBlur" });
 
   const handleUserLogin = async (userData: any) => {
@@ -71,10 +72,21 @@ const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
             </div>
 
             {/* Login Form */}
-            <form className="space-y-5" onSubmit={handleSubmit(handleUserLogin)}>
-              <EmailField {...register("email")} />
-              <PasswordField title='Password' {...register("password")} />
-              {response && <p className='text-red-600'>{response}</p>}
+            <form className="space-y-5" onSubmit={handleSubmit(handleUserLogin)} noValidate>
+              <EmailField {...register("email", { required: {
+                value: true,
+                message: "Email is required"
+              }})} />
+              {errors.email && <p className='text-red-600'>{errors.email.message?.toString()}</p>}
+
+              <PasswordField title='Password' {...register("password", {
+                required: {
+                  value: true,
+                  message: "Password is required"
+                }
+              })} />
+              {errors.password && <p className='text-red-600'>{errors.password.message?.toString()}</p>}
+              {(response && Object.keys(errors).length === 0) && <p className='text-red-600'>{response}</p>}
               <AuthOptions />
 
               {/* Submit Button */}
