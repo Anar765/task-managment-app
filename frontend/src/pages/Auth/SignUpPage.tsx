@@ -18,7 +18,9 @@ const SignUpPage = () => {
 
   const {
     register,
-    handleSubmit
+    handleSubmit,
+    watch,
+    formState: { errors }
   } = useForm();
 
   const handleUserSignUpSubmit = async (newUserData: any) => {    
@@ -75,13 +77,50 @@ const SignUpPage = () => {
 
             {/* Signup Form */}
             <form className="space-y-4" onSubmit={handleSubmit(handleUserSignUpSubmit)}>
-              <FullNameField {...register("fullName")} />
-              <EmailField {...register("email")} />
-              <RoleAndPositionField {...register("role")} />
-              <PasswordField title='Password' {...register("password")} />
-              <ConfirmPasswordField title='Confirm password' {...register("confirm-password")} />
-              {response && <p className='text-red-600'>{response}</p>}
-              <TermsAndConditions />
+              <FullNameField {...register("fullName", {
+                required: {
+                  value: true,
+                  message: "Full name is required"
+                }
+              })} />
+              {errors.fullName && <p className='text-red-600'>{errors.fullName?.message?.toString()}</p>}
+              <EmailField {...register("email", {
+                required: {
+                  value: true,
+                  message: "Email is required"
+                }
+              })} />
+              {errors.email && <p className='text-red-600'>{errors.email?.message?.toString()}</p>}
+              <RoleAndPositionField {...register("role", {
+                required: {
+                  value: true,
+                  message: "Role is required"
+                }
+              })} />
+              {errors.role && <p className='text-red-600'>{errors.role?.message?.toString()}</p>}
+              <PasswordField title='Password' {...register("password", {
+                required: {
+                  value: true,
+                  message: "Password is required"
+                }
+              })} />
+              {errors.password && <p className='text-red-600'>{errors.password?.message?.toString()}</p>}
+              <ConfirmPasswordField title='Confirm password' {...register("confirm-password", {
+                required: {
+                  value: true,
+                  message: "Please confirm your password"
+                },
+                validate: (value) => value === watch('password') || "The passwords do not match"
+              })} />
+              {errors['confirm-password'] && <p className='text-red-600'>{errors['confirm-password'].message?.toString()}</p> }
+              {(Object.keys(errors).length === 0 && response) && <p className='text-red-600'>{response}</p>}
+              <TermsAndConditions {...register("terms", {
+                required: {
+                  value: true,
+                  message: "Please accept the terms and conditions to create your account"
+                }
+              })} />
+              {errors.terms && <p className='text-red-600'>{errors.terms?.message?.toString()}</p>}
               
               {/* Submit Button */}
               <button

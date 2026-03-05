@@ -1,4 +1,6 @@
-const TermsAndConditions = () => {
+import { forwardRef, type ComponentPropsWithRef } from "react";
+
+const TermsAndConditions = forwardRef<HTMLInputElement, ComponentPropsWithRef<"input">>(({...props}, ref) => {
   return (
     <>
         {/* Terms & Conditions */}
@@ -6,6 +8,8 @@ const TermsAndConditions = () => {
             <input
                 id="terms"
                 type="checkbox"
+                {...props}
+                ref={ref}
                 className="w-4 h-4 mt-1 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
             />
             <label htmlFor="terms" className="text-sm text-gray-600">
@@ -21,6 +25,6 @@ const TermsAndConditions = () => {
         </div>
     </>
   )
-}
+})
 
 export default TermsAndConditions
