@@ -31,27 +31,28 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
     }
   }, [user, username]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleNewTaskSubmit = async (task: any) => {
+
+    const newTask: Task = { ...task, status: "Not completed", date: new Date(task.date) }
 
     try {
-      const formData = new FormData(e.currentTarget)
+      // const formData = new FormData(e.currentTarget)
 
-      const task: Task = {
-        title: formData.get("title") as string,
-        description: formData.get("description") as string,
-        status: "Not started",
-        priority: formData.get("priority") as string,
-        category: formData.get("category") as string,
-        date: new Date(formData.get("date") as string)
-      };
+      // const task: Task = {
+      //   title: formData.get("title") as string,
+      //   description: formData.get("description") as string,
+      //   status: "Not started",
+      //   priority: formData.get("priority") as string,
+      //   category: formData.get("category") as string,
+      //   date: new Date(formData.get("date") as string)
+      // };
 
       const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(task)
+        body: JSON.stringify(newTask)
       });
 
       if (!response.ok) {
@@ -60,7 +61,7 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
 
       const json = await response.json();
 
-      setTasks((prevState) => [...prevState, task]);
+      setTasks((prevState) => [...prevState, newTask]);
       setResponse(json.message);
       setIsNewTaskFormOpen(false);
 
@@ -104,7 +105,7 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
         </div>
       </div>
 
-      {isNewTaskFormOpen && <NewTaskForm handleSubmit={handleSubmit} setIsNewTaskFormOpen={setIsNewTaskFormOpen} />}
+      {isNewTaskFormOpen && <NewTaskForm handleNewTaskSubmit={handleNewTaskSubmit} setIsNewTaskFormOpen={setIsNewTaskFormOpen} />}
     </div>
   )
 }

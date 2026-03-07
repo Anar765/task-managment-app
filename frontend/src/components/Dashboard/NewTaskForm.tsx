@@ -1,15 +1,23 @@
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-const NewTaskForm = ({ handleSubmit, setIsNewTaskFormOpen }: { handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void, setIsNewTaskFormOpen: (state: boolean) => void }) => {
+const NewTaskForm = ({ handleNewTaskSubmit, setIsNewTaskFormOpen }: { handleNewTaskSubmit: (task: any) => void, setIsNewTaskFormOpen: (state: boolean) => void }) => {
 
   const [priorityDropdown, setPriorityDropdown] = useState(false);
   const [categoryDropdown, setCategoryDropdown] = useState(false);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm();
+
   return (
     <div className="fixed inset-0 z-50 flex-center p-4 backdrop-blur-sm bg-black/30 animate-in fade-in duration-200">
       <form
-        onSubmit={handleSubmit} 
+        onSubmit={handleSubmit(handleNewTaskSubmit)}
+        noValidate
         className="flex flex-col gap-5 p-8 bg-white rounded-2xl w-full max-w-md shadow-2xl border border-gray-100"
       >
         <div className="space-y-1">
@@ -22,23 +30,41 @@ const NewTaskForm = ({ handleSubmit, setIsNewTaskFormOpen }: { handleSubmit: (e:
           <div className="flex flex-col gap-1.5">
             <label htmlFor="title" className="text-sm font-medium text-gray-700">Title</label>
             <input 
-              type="text" 
-              name="title" 
-              id="title" 
+              type="text"
+              {...register("title", {
+                required: {
+                  value: true,
+                  message: "Title is required"
+                }
+              })}
+              name="title"
+              id="title"
               placeholder="e.g. Design System"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" 
             />
+            {errors.title && <p className="text-red-600">{errors.title?.message?.toString()}</p>}
           </div>
 
           {/* Description */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="description" className="text-sm font-medium text-gray-700">Description</label>
             <textarea 
+              {...register("description", {
+                required: {
+                  value: true,
+                  message: "Description is required"
+                },
+                minLength: {
+                  value: 20,
+                  message: "Write understandable description"
+                }
+              })}
               name="description" 
               id="description" 
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
             ></textarea>
+            {errors.description && <p className="text-red-600">{errors.description?.message?.toString()}</p>}
           </div>
 
           {/* Category Section */}
@@ -46,6 +72,12 @@ const NewTaskForm = ({ handleSubmit, setIsNewTaskFormOpen }: { handleSubmit: (e:
             <label htmlFor="category" className="text-sm font-medium text-gray-700">Category</label>
             <div className="relative">
               <select 
+                {...register("category", {
+                  required: {
+                    value: true,
+                    message: "Category is required"
+                  }
+                })}
                 name="category"
                 id="category"
                 onClick={() => setCategoryDropdown(prevState => !prevState)}
@@ -62,6 +94,7 @@ const NewTaskForm = ({ handleSubmit, setIsNewTaskFormOpen }: { handleSubmit: (e:
               </select>
               <ChevronDown className={`chevron-select-styles ${categoryDropdown ? "rotate-180" : "rotate-0"}`}/>
             </div>
+            {errors.category && <p className="text-red-600">{errors.category?.message?.toString()}</p>}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -70,6 +103,9 @@ const NewTaskForm = ({ handleSubmit, setIsNewTaskFormOpen }: { handleSubmit: (e:
               <label htmlFor="priority" className="text-sm font-medium text-gray-700">Priority</label>
               <div className="relative">
                 <select 
+                  {...register("priority", {
+                    required: "Priority is required"
+                  })}
                   name="priority"
                   id="priority"
                   onClick={() => setPriorityDropdown(prevState => !prevState)}
@@ -81,17 +117,22 @@ const NewTaskForm = ({ handleSubmit, setIsNewTaskFormOpen }: { handleSubmit: (e:
                 </select>
                 <ChevronDown className={`chevron-select-styles ${priorityDropdown ? "rotate-180" : "rotate-0"}`} />
               </div>
+              {errors.priority && <p className="text-red-600">{errors.priority?.message?.toString()}</p>}
             </div>
 
             {/* Due Date */}
             <div className="flex flex-col gap-1.5">
               <label htmlFor="date" className="text-sm font-medium text-gray-700">Due Date</label>
               <input 
-                type="date" 
-                name="date" 
-                id="date" 
+                type="date"
+                {...register("date", {
+                  required: "Date is required"
+                })}
+                name="date"
+                id="date"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500" 
               />
+              {errors.date && <p className="text-red-600">{errors.date?.message?.toString()}</p>}
             </div>
           </div>
         </div>
