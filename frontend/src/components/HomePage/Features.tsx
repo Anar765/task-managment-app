@@ -1,17 +1,22 @@
+import { useContext } from "react";
 import { features } from "../../data/featuresData";
 import Feature from "./Feature";
+import { AppContext } from "../../App";
 
 const Features = () => {
+
+    const { isDarkMode } = useContext(AppContext);
+
     return (
         <>
             {/* Features Section */}
-            <section id="features" className="py-20 md:py-32 bg-white">
+            <section id="features" className="py-20 md:py-32 bg-white dark:bg-gray-800">
                 <div className="container-base">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
                         Everything you need to stay organized
                         </h2>
-                        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                         Built with developers in mind. All the features you need, none of the bloat.
                         </p>
                     </div>
@@ -23,10 +28,7 @@ const Features = () => {
                                 title={feature.title}
                                 text={feature.text}
                                 Icon={feature.Icon}
-                                borderColor={feature.borderColor}
-                                bgColor={feature.bgColor}
-                                gradient={feature.gradient}
-                                IconColor={feature.IconColor}
+                                stylesByTheme={isDarkMode ? feature.darkMode : feature.lightMode}
                             />
                         })}
                     </div>

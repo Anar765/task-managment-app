@@ -7,29 +7,29 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+    <nav className="sticky top-0 z-50 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
       <div className="container-base">
         <div className="flex items-center justify-between h-16">
           
           {/* Logo */}
           <div className="flex items-center gap-3 shrink-0">
-            <div className="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center">
+            <div className="w-9 h-9 bg-indigo-600 dark:bg-indigo-500 rounded-lg flex items-center justify-center">
               <CheckCircle2 className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-gray-900">DevTasks</span>
+            <span className="text-xl font-bold text-gray-900 dark:text-white">DevTasks</span>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors">Features</a>
-            <a href="#benefits" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors">Benefits</a>
-            <a href="#" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors">Docs</a>
+            <a href="#features" className="text-sm font-medium text-gray-600 dark:text-gray-300 dark:hover:text-white hover:text-indigo-600 transition-colors">Features</a>
+            <a href="#benefits" className="text-sm font-medium text-gray-600 dark:text-gray-300 dark:hover:text-white hover:text-indigo-600 transition-colors">Benefits</a>
+            <a href="#" className="text-sm font-medium text-gray-600 dark:text-gray-300 dark:hover:text-white hover:text-indigo-600 transition-colors">Docs</a>
           </div>
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
-            <Link to="/login" className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Sign in</Link>
-            <Link to="/signup" className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-all shadow-sm">
+            <Link to="/login" className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Sign in</Link>
+            <Link to="/signup" className="px-4 py-2 bg-indigo-600 dark:bg-indigo-500 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-all shadow-sm">
               Get Started
             </Link>
             <ThemeToggle />
