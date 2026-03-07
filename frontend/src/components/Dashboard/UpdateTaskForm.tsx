@@ -1,16 +1,22 @@
 import type { Task } from "../../types/tasks.type";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { updateTask: (e: React.FormEvent<HTMLFormElement>) => void, setIsUpdateTaskFormOpen: (state: boolean) => void, task: Task }) => {
+const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { updateTask: (task: any) => void, setIsUpdateTaskFormOpen: (state: boolean) => void, task: Task }) => {
 
     const [priorityDropdown, setPriorityDropdown] = useState(false);
     const [categoryDropdown, setCategoryDropdown] = useState(false);
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm();
 
     return (
         <div className="fixed inset-0 z-50 flex-center p-4 backdrop-blur-sm bg-black/30 animate-in fade-in duration-200">
             <form
-                onSubmit={updateTask} 
+                onSubmit={handleSubmit(updateTask)} 
                 className="flex flex-col gap-5 p-8 bg-white rounded-2xl w-full max-w-md shadow-2xl border border-gray-100"
             >
                 <div className="space-y-1">
@@ -23,6 +29,9 @@ const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { update
                 <div className="flex flex-col gap-1.5">
                     <label htmlFor="title" className="text-sm font-medium text-gray-700">Title</label>
                     <input 
+                    {...register("title", {
+                        required: "Title is required"
+                    })}
                     type="text" 
                     name="title"
                     id="title"
@@ -30,18 +39,27 @@ const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { update
                     placeholder="e.g. Design System"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" 
                     />
+                    {errors.title && <p className="text-red-600">{errors.title?.message?.toString()}</p>}
                 </div>
 
                 {/* Description */}
                 <div className="flex flex-col gap-1.5">
                     <label htmlFor="description" className="text-sm font-medium text-gray-700">Description</label>
                     <textarea 
+                    {...register("description", {
+                        required: "Description is required",
+                        minLength: {
+                            value: 20,
+                            message: "Write understandable description"
+                        }
+                    })}
                     name="description" 
                     id="description" 
                     defaultValue={task.description}
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                     ></textarea>
+                    {errors.description && <p className="text-red-600">{errors.description?.message?.toString()}</p>}
                 </div>
 
                 {/* Category Section */}
@@ -49,6 +67,9 @@ const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { update
                     <label htmlFor="category" className="text-sm font-medium text-gray-700">Category</label>
                     <div className="relative">
                         <select 
+                        {...register("category", {
+                            required: "Category is required"
+                        })}
                         name="category"
                         id="category"
                         onClick={() => setCategoryDropdown(prevState => !prevState)}
@@ -65,6 +86,7 @@ const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { update
                         </select>
                         <ChevronDown className={`chevron-select-styles ${categoryDropdown ? "rotate-180" : "rotate-0"}`}/>
                     </div>
+                    {errors.category && <p className="text-red-600">{errors.category?.message?.toString()}</p>}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -73,6 +95,9 @@ const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { update
                         <label htmlFor="priority" className="text-sm font-medium text-gray-700">Priority</label>
                         <div className="relative">
                             <select 
+                                {...register("priority", {
+                                    required: "Priority is required"
+                                })}
                                 defaultValue={task.priority}
                                 name="priority"
                                 id="priority"
@@ -85,18 +110,23 @@ const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { update
                             </select>
                             <ChevronDown className={`chevron-select-styles ${priorityDropdown ? "rotate-180" : "rotate-0"}`}/>
                         </div>
+                        {errors.priority && <p className="text-red-600">{errors.priority?.message?.toString()}</p>}
                     </div>
 
                     {/* Due Date */}
                     <div className="flex flex-col gap-1.5">
                         <label htmlFor="date" className="text-sm font-medium text-gray-700">Due Date</label>
                         <input 
+                            {...register("date", {
+                                required: "Date is required"
+                            })}
                             type="date" 
                             name="date" 
                             id="date"
                             defaultValue={new Date(task.date).toISOString().split('T')[0]}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500" 
                         />
+                        {errors.date && <p className="text-red-600">{errors.date?.message?.toString()}</p>}
                     </div>
                 </div>
                 </div>

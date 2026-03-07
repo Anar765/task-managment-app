@@ -49,20 +49,23 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
         }
     };
 
-    const updateTask = async(e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const updateTask = async(task: any) => {
+        // e.preventDefault();
 
-        const formData = new FormData(e.currentTarget);
+        // const formData = new FormData(e.currentTarget);
 
-        const updatedTask: Task = {
-            title: formData.get("title") as string,
-            description: formData.get("description") as string,
-            status,
-            priority: formData.get("priority") as string,
-            category: formData.get("category") as string,
-            date: new Date(formData.get("date") as string)
-        };
+        // const updatedTask: Task = {
+        //     title: formData.get("title") as string,
+        //     description: formData.get("description") as string,
+        //     status,
+        //     priority: formData.get("priority") as string,
+        //     category: formData.get("category") as string,
+        //     date: new Date(formData.get("date") as string)
+        // };
         try {
+
+            const updatedTask = { ...task, status, date: new Date(task.date)}
+
             const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/update/${id}`, {
                 method: "PATCH",
                 headers: {
