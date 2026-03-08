@@ -57,18 +57,18 @@ const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-800 dark:via-gray-900 dark:to-purple-900/20 flex items-center justify-center p-4">
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         <BrandingAndImage />
 
         {/* Right Side - Login Form */}
         <div className="w-full max-w-md mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-200 px-4 py-8 md:p-8">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 px-4 py-8 md:p-8">
             <Logo isMobileLogo={true} />
 
             <div className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome back</h2>
-              <p className="text-gray-600">Sign in to continue to your tasks</p>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Welcome back</h2>
+              <p className="text-gray-600 dark:text-gray-400">Sign in to continue to your tasks</p>
             </div>
 
             {/* Login Form */}
@@ -77,7 +77,7 @@ const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
                 value: true,
                 message: "Email is required"
               }})} />
-              {errors.email && <p className='text-red-600'>{errors.email.message?.toString()}</p>}
+              {errors.email && <p className='text-red-600 dark:text-red-400'>{errors.email.message?.toString()}</p>}
 
               <PasswordField title='Password' {...register("password", {
                 required: {
@@ -85,23 +85,23 @@ const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
                   message: "Password is required"
                 }
               })} />
-              {errors.password && <p className='text-red-600'>{errors.password.message?.toString()}</p>}
-              {(response && Object.keys(errors).length === 0) && <p className='text-red-600'>{response}</p>}
+              {errors.password && <p className='text-red-600 dark:text-red-400'>{errors.password.message?.toString()}</p>}
+              {(response && Object.keys(errors).length === 0) && <p className='text-red-600 dark:text-red-400'>{response}</p>}
               <AuthOptions />
 
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+                className="w-full bg-indigo-600 dark:bg-indigo-500 text-white py-3 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors font-medium"
               >
                 Sign in
               </button>
             </form>
 
             {/* Sign Up Link */}
-            <p className="mt-6 text-center text-sm text-gray-600">
+            <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
               Don't have an account?{' '}
-              <Link to="/signup" className="text-indigo-600 hover:text-indigo-700 font-medium">
+              <Link to="/signup" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium">
                 Sign up for free
               </Link>
             </p>
