@@ -86,7 +86,7 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 relative">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
       <Notification />
       <Header setIsNewTaskFormOpen={setIsNewTaskFormOpen} setSearchTask={setSearchTask} />
 

@@ -144,8 +144,8 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
                 // 2. toggle state on click
                 onClick={() => setIsExpanded(!isExpanded)}
                 className={`task-container
-                    ${isInProgress ? "border-indigo-200 border-l-4" : "border-gray-100"}
-                    ${isExpanded ? "ring-1 ring-indigo-50" : ""}
+                    ${isInProgress ? "border-indigo-200 dark:border-indigo-800 border-l-4" : "border-gray-100 dark:border-gray-700"}
+                    ${isExpanded ? "ring-1 ring-indigo-50 dark:ring-indigo-900/50" : ""}
                 `}
             >
                 <div className="flex items-start gap-3 sm:gap-4">
@@ -158,7 +158,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
                             {/* 3. Logic: If expanded, wrap text. If closed, truncate. */}
                             <h3 
                                 title={title} 
-                                className={`font-semibold text-gray-900 wrap-break-words ${isCompleted && "line-through text-gray-400"} ${isExpanded ? "" : "truncate"}`}
+                                className={`font-semibold text-gray-900 dark:text-white wrap-break-words ${isCompleted && "line-through text-gray-400"} ${isExpanded ? "" : "truncate"}`}
                             >
                                 {title}
                             </h3>
@@ -171,12 +171,12 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
                         {/* 4. Logic: If expanded, show all. If closed, clamp to 2 lines. */}
                         <p 
                             title={description} 
-                            className={`text-sm text-gray-600 mb-4 wrap-break-words ${isCompleted && "line-through opacity-50"} ${isExpanded ? "" : "line-clamp-2"}`}
+                            className={`text-sm text-gray-600 dark:text-gray-400 mb-4 wrap-break-words ${isCompleted && "line-through opacity-50"} ${isExpanded ? "" : "line-clamp-2"}`}
                         >
                             {description}
                         </p>
 
-                        <div className="flex-between-center flex-wrap gap-y-2 gap-x-4 text-xs sm:text-sm text-gray-500">
+                        <div className="flex-between-center flex-wrap gap-y-2 gap-x-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                             <div className="flex-hor-center flex-wrap gap-4">
                                 <div className="flex-hor-center gap-1">
                                     <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -203,7 +203,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
                                 </button>
 
                                 {/* Optional: Visual hint that the card can be toggled */}
-                                <div className="text-gray-500">
+                                <div className="text-gray-500 dark:text-gray-300">
                                     {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                                 </div>
                             </div>

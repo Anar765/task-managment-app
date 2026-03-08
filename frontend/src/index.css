@@ -218,15 +218,15 @@
 
 @layer components {
   .task-container {
-    @apply bg-white rounded-xl p-4 sm:p-6 border transition-all duration-200 hover:shadow-md cursor-pointer;
+    @apply bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 border transition-all duration-200 hover:shadow-md dark:hover:shadow-gray-800 cursor-pointer;
   }
 
   .stats-card {
-    @apply bg-white rounded-xl p-6 border border-gray-200;
+    @apply bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700;
   }
 
   .sidebar-category {
-    @apply w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors;
+    @apply w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors;
   }
 
   .select-styles {

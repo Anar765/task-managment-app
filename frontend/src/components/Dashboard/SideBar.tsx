@@ -19,47 +19,47 @@ const SideBar = () => {
             {/* Sidebar - Quick Actions & Info */}
             <div className="space-y-6">
                 {/* Categories */}
-                <div className="bg-white rounded-xl p-6 border border-gray-200">
-                    <h3 className="font-semibold text-gray-900 mb-4">Categories</h3>
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Categories</h3>
                     <div className="space-y-3">
                         <button className="sidebar-category">
                             <div className="flex-hor-center gap-3">
                                 <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                                <span className="text-gray-700">Backend</span>
+                                <span className="text-gray-700 dark:text-gray-300">Backend</span>
                             </div>
-                            <span className="text-sm text-gray-500">{backendTasks}</span>
+                            <span className="text-sm text-gray-500 dark:text-gray-400">{backendTasks}</span>
                         </button>
 
                         <button className="sidebar-category">
                             <div className="flex-hor-center gap-3">
                                 <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                                <span className="text-gray-700">Frontend</span>
+                                <span className="text-gray-700 dark:text-gray-300">Frontend</span>
                             </div>
-                            <span className="text-sm text-gray-500">{frontendTasks}</span>
+                            <span className="text-sm text-gray-500 dark:text-gray-400">{frontendTasks}</span>
                         </button>
 
                         <button className="sidebar-category">
                             <div className="flex-hor-center gap-3">
                                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                                <span className="text-gray-700">Database</span>
+                                <span className="text-gray-700 dark:text-gray-300">Database</span>
                             </div>
-                            <span className="text-sm text-gray-500">{databaseTasks}</span>
+                            <span className="text-sm text-gray-500 dark:text-gray-400">{databaseTasks}</span>
                         </button>
 
                         <button className="sidebar-category">
                             <div className="flex-hor-center gap-3">
                                 <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                                <span className="text-gray-700">DevOps</span>
+                                <span className="text-gray-700 dark:text-gray-300">DevOps</span>
                             </div>
-                            <span className="text-sm text-gray-500">{devOpsTasks}</span>
+                            <span className="text-sm text-gray-500 dark:text-gray-400">{devOpsTasks}</span>
                         </button>
 
                         <button className="sidebar-category">
                             <div className="flex items-center gap-3">
                                 <div className="w-3 h-3 bg-pink-500 rounded-full"></div>
-                                <span className="text-gray-700">Testing</span>
+                                <span className="text-gray-700 dark:text-gray-300">Testing</span>
                             </div>
-                            <span className="text-sm text-gray-500">{testingTasks}</span>
+                            <span className="text-sm text-gray-500 dark:text-gray-400">{testingTasks}</span>
                         </button>
                     </div>
                 </div>
