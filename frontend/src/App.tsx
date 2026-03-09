@@ -5,6 +5,7 @@ import ResetPasswordPage from "./pages/Auth/ResetPasswordPage";
 import SignUpPage from "./pages/Auth/SignUpPage";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
 import HomePage from "./pages/HomePage/HomePage";
+import NotFoundPage from "./pages/Error/NotFoundPage.tsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import type { User } from "./types/user.type.ts";
 import type { Task } from "./types/tasks.type.ts";
@@ -81,7 +82,7 @@ const App = () => {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/dashboard/:username" element={<DashboardPage user={user} />} />
-          <Route path="*" element={<h1>Not Found</h1>}/>
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </AppContext.Provider>
