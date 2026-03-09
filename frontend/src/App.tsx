@@ -37,7 +37,10 @@ const App = () => {
     return savedUser ? JSON.parse(savedUser) : undefined;
   });
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem("DevTasksTheme");
+    return savedTheme !== null ? JSON.parse(savedTheme) : false;
+  });
   const [response, setResponse] = useState("");
 
   useEffect(() => {
@@ -70,6 +73,8 @@ const App = () => {
     } else {
       document.body.classList.remove("dark");
     }
+
+    localStorage.setItem("DevTasksTheme", JSON.stringify(isDarkMode));
   }, [isDarkMode]);
 
   return (

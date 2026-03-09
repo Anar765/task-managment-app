@@ -1,9 +1,13 @@
 import { Sun, Moon } from "lucide-react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AppContext } from "../../App";
 
 const ThemeToggle = () => {
     const { isDarkMode, setIsDarkMode } = useContext(AppContext);
+
+    useEffect(() => {
+        localStorage.setItem("DevTasksTheme", JSON.stringify(isDarkMode));
+    }, [isDarkMode]);
 
     return (
         <button
