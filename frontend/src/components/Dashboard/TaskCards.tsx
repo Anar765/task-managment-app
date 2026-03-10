@@ -23,7 +23,7 @@ const TaskCards = ({ searchTask, filterParams } : { searchTask: string, filterPa
         <>
             {tasks.length !== 0 ? (filteredTasks.length !== 0 ? 
                 <Reorder.Group values={tasks} onReorder={setTasks} className="flex flex-col gap-4">
-                    {filteredTasks.map((task) => (
+                    {filteredTasks.reverse().map((task) => (
                     <Reorder.Item value={task} key={task.id}>
                         <TaskCard
                             key={task.id}
