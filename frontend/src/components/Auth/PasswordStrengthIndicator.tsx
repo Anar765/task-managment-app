@@ -27,20 +27,20 @@ const PasswordStrengthIndicator = ({ password }: { password: string }) => {
                             : passwordStrength <= 3
                             ? 'bg-yellow-500'
                             : 'bg-green-500'
-                          : 'bg-gray-200'
+                          : 'bg-gray-200 dark:bg-gray-700'
                       }`}
                     />
                   ))}
                 </div>
-                <p className="text-xs text-gray-600">
+                <p className="text-xs text-gray-600 dark:text-gray-400">
                   Password strength:{' '}
                   <span
                     className={`font-medium ${
                       passwordStrength <= 2
-                        ? 'text-red-600'
+                        ? 'text-red-600 dark:text-red-400'
                         : passwordStrength <= 3
-                        ? 'text-yellow-600'
-                        : 'text-green-600'
+                        ? 'text-yellow-600 dark:text-yellow-400'
+                        : 'text-green-600 dark:text-green-400'
                     }`}
                   >
                     {passwordStrength <= 2 ? 'Weak' : passwordStrength <= 3 ? 'Medium' : 'Strong'}
@@ -50,66 +50,66 @@ const PasswordStrengthIndicator = ({ password }: { password: string }) => {
             )}
 
             {/* Password Requirements */}
-            <div className="bg-gray-50 rounded-lg p-4 space-y-2">
-              <p className="text-xs font-medium text-gray-700 mb-2">Password must contain:</p>
+            <div className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4 space-y-2">
+              <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Password must contain:</p>
               <div className="space-y-1.5">
                 <div className="flex items-center gap-2">
                   <div
                     className={`w-4 h-4 rounded-full flex items-center justify-center ${
-                      hasMinLength ? 'bg-green-500' : 'bg-gray-300'
+                      hasMinLength ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
                     }`}
                   >
                     {hasMinLength && <Check className="w-3 h-3 text-white" />}
                   </div>
-                  <span className={`text-xs ${hasMinLength ? 'text-green-700' : 'text-gray-600'}`}>
+                  <span className={`text-xs ${hasMinLength ? 'text-green-700 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}`}>
                     At least 8 characters
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div
                     className={`w-4 h-4 rounded-full flex items-center justify-center ${
-                      hasUpperCase ? 'bg-green-500' : 'bg-gray-300'
+                      hasUpperCase ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
                     }`}
                   >
                     {hasUpperCase && <Check className="w-3 h-3 text-white" />}
                   </div>
-                  <span className={`text-xs ${hasUpperCase ? 'text-green-700' : 'text-gray-600'}`}>
+                  <span className={`text-xs ${hasUpperCase ? 'text-green-700 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}`}>
                     One uppercase letter
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div
                     className={`w-4 h-4 rounded-full flex items-center justify-center ${
-                      hasLowerCase ? 'bg-green-500' : 'bg-gray-300'
+                      hasLowerCase ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
                     }`}
                   >
                     {hasLowerCase && <Check className="w-3 h-3 text-white" />}
                   </div>
-                  <span className={`text-xs ${hasLowerCase ? 'text-green-700' : 'text-gray-600'}`}>
+                  <span className={`text-xs ${hasLowerCase ? 'text-green-700 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}`}>
                     One lowercase letter
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div
                     className={`w-4 h-4 rounded-full flex items-center justify-center ${
-                      hasNumber ? 'bg-green-500' : 'bg-gray-300'
+                      hasNumber ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
                     }`}
                   >
                     {hasNumber && <Check className="w-3 h-3 text-white" />}
                   </div>
-                  <span className={`text-xs ${hasNumber ? 'text-green-700' : 'text-gray-600'}`}>
+                  <span className={`text-xs ${hasNumber ? 'text-green-700 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}`}>
                     One number
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div
                     className={`w-4 h-4 rounded-full flex items-center justify-center ${
-                      hasSpecialChar ? 'bg-green-500' : 'bg-gray-300'
+                      hasSpecialChar ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
                     }`}
                   >
                     {hasSpecialChar && <Check className="w-3 h-3 text-white" />}
                   </div>
-                  <span className={`text-xs ${hasSpecialChar ? 'text-green-700' : 'text-gray-600'}`}>
+                  <span className={`text-xs ${hasSpecialChar ? 'text-green-700 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}`}>
                     One special character
                   </span>
                 </div>

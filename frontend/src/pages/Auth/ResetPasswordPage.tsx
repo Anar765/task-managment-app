@@ -9,15 +9,15 @@ const ResetPasswordPage = () => {
   const [password, setPassword] = useState('');
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-800 dark:via-gray-900 dark:to-purple-900/20 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-200 px-4 py-8 md:p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 px-4 py-8 md:p-8">
           <Logo isMobileLogo={false} />
 
           {/* Header */}
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Set new password</h2>
-            <p className="text-gray-600">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Set new password</h2>
+            <p className="text-gray-600 dark:text-gray-400">
               Your new password must be different from previously used passwords
             </p>
           </div>
