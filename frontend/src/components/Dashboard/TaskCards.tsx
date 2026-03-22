@@ -7,7 +7,7 @@ import { Reorder } from "framer-motion";
 const TaskCards = ({ searchTask, filterParams } : { searchTask: string, filterParams: FilterParams }) => {
 
     const { tasks, setTasks } = useContext(AppContext);
-    const filteredTasks = tasks.filter((task) => {
+    const filteredTasks = tasks.reverse().filter((task) => {
         // Check if the search term matches the title
         const matchesSearch = task.title.toLowerCase().includes(searchTask.toLowerCase());
 
@@ -23,7 +23,7 @@ const TaskCards = ({ searchTask, filterParams } : { searchTask: string, filterPa
         <>
             {tasks.length !== 0 ? (filteredTasks.length !== 0 ? 
                 <Reorder.Group values={tasks} onReorder={setTasks} className="flex flex-col gap-4">
-                    {filteredTasks.reverse().map((task) => (
+                    {filteredTasks.map((task) => (
                     <Reorder.Item value={task} key={task.id}>
                         <TaskCard
                             key={task.id}
