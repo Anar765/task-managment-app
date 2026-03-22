@@ -24,7 +24,7 @@ const ResetPasswordPage = () => {
 
           {/* Form */}
           <form className="space-y-5">
-            <PasswordField title='New Password' setPassword={setPassword} />
+            <PasswordField title='New Password' onChange={(e) => setPassword(e.target.value)} />
             <PasswordStrengthIndicator password={password} />
             <ConfirmPasswordField title='Confirm new password' />
 
