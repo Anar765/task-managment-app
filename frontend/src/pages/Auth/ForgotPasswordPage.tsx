@@ -7,18 +7,18 @@ const ForgotPasswordPage = () => {
   const [emailSent, setEmailSent] = useState(false);
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-800 dark:via-gray-900 dark:to-purple-900/20 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-200 px-4 py-8 md:p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 px-4 py-8 md:p-8">
           <Logo isMobileLogo={false} />
 
           {!emailSent ? <ResetLink setEmailSent={setEmailSent} /> : <SuccessState />}
         </div>
 
         {/* Help Text */}
-        <p className="mt-6 text-center text-xs text-gray-500">
+        <p className="mt-6 text-center text-xs text-gray-500 dark:text-gray-400">
           Need help?{' '}
-          <a href="#" className="text-indigo-600 hover:text-indigo-700">
+          <a href="#" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300">
             Contact support
           </a>
         </p>
