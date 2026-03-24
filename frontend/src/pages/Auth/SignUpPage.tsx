@@ -1,4 +1,4 @@
-import { Lock } from 'lucide-react';
+import { Lock, Loader } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import EmailField from '../../components/Auth/EmailField';
 import PasswordField from '../../components/Auth/PasswordField';
@@ -20,7 +20,7 @@ const SignUpPage = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors }
+    formState: { errors, isSubmitting }
   } = useForm();
 
   const handleUserSignUpSubmit = async (newUserData: any) => {    
@@ -125,9 +125,17 @@ const SignUpPage = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-indigo-600 dark:bg-indigo-500 text-white py-3 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors font-medium"
+                disabled={isSubmitting}
+                className="w-full flex items-center justify-center gap-2 bg-indigo-600 dark:bg-indigo-500 text-white py-3 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors font-medium disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                Create account
+                {isSubmitting ? (
+                  <>
+                    <Loader className="w-4 h-4 animate-spin" />
+                    <span>Creating account...</span>
+                  </>
+                ) : (
+                  "Create account"
+                )}
               </button>
             </form>
 

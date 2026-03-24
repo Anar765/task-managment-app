@@ -9,6 +9,7 @@ import type { User } from '../../types/user.type.ts';
 import { useForm } from 'react-hook-form';
 import { useContext } from 'react';
 import { AppContext } from '../../App.tsx';
+import { Loader } from 'lucide-react';
 
 const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
 
@@ -17,7 +18,7 @@ const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isSubmitting }
   } = useForm({ mode: "onBlur" });
 
   const handleUserLogin = async (userData: any) => {
@@ -92,9 +93,17 @@ const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-indigo-600 dark:bg-indigo-500 text-white py-3 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors font-medium"
+                disabled={isSubmitting}
+                className="w-full flex items-center justify-center gap-2 bg-indigo-600 dark:bg-indigo-500 text-white py-3 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors font-medium disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                Sign in
+                {isSubmitting ? (
+                  <>
+                    <Loader className="w-4 h-4 animate-spin" />
+                    <span>Signing in...</span>
+                  </>
+                ) : (
+                  "Sign in"
+                )}
               </button>
             </form>
 

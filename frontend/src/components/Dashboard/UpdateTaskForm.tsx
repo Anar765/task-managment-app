@@ -1,5 +1,5 @@
 import type { Task } from "../../types/tasks.type";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Loader } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -10,7 +10,7 @@ const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { update
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors, isSubmitting }
     } = useForm();
 
     return (
@@ -135,16 +135,25 @@ const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { update
                 <div className="flex items-center gap-3 mt-2">
                 <button 
                     type="button"
+                    disabled={isSubmitting}
                     onClick={() => setIsUpdateTaskFormOpen(false)}
-                    className="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-xl transition-colors"
+                    className="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-xl transition-colors disabled:opacity-50"
                 >
                     Cancel
                 </button>
                 <button 
                     type="submit"
-                    className="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-md shadow-blue-200 dark:shadow-none transition-all active:scale-[0.98]"
+                    disabled={isSubmitting}
+                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-md shadow-blue-200 dark:shadow-none transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                    Update Task
+                    {isSubmitting ? (
+                        <>
+                            <Loader className="w-4 h-4 animate-spin" />
+                            <span>Updating...</span>
+                        </>
+                    ): (
+                        "Update Task"
+                    )}
                 </button>
                 </div>
             </form>
