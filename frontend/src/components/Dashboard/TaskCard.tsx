@@ -1,5 +1,5 @@
 import { Calendar, Tag, ChevronDown, ChevronUp, Trash2, PencilLine } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext, useState, useMemo, useCallback, useEffect } from "react";
 import type { Task } from "../../types/tasks.type";
 import { taskCategoryStyle, taskIconStyle, taskPriorityStyle, type Style } from "../../util/getTaskStyles";
 import { AppContext } from "../../App";
@@ -8,25 +8,27 @@ import UpdateTaskForm from "./UpdateTaskForm";
 const nextStep = {
     "Not started": "In progress",
     "In progress": "Completed",
-    "Completed": "Not started"
+    "Completed": "Not started",
+    "Overdue": "Completed"
 }
 
 const TaskCard = ({id, title, description, category, status, priority, date}: Task) => {
-    const ellipse = new Date().getTime() - date.getTime();
     const { user, setTasks, setResponse } = useContext(AppContext);
 
     // 1. State to handle toggle
     const [isExpanded, setIsExpanded] = useState(false);
     const [isUpdateTestFormOpen, setIsUpdateTaskFormOpen] = useState(false);
 
-    const priorityStyles: Style = taskPriorityStyle(priority);
-    const categoryStyles: Style = taskCategoryStyle(category);
-    const { Icon, styles } = taskIconStyle(status);
-
     const isCompleted = status === "Completed";
     const isInProgress = status === "In progress";
-    const isPastDeadline = ellipse > 0;
-    const isOverdue = isPastDeadline || status === "Overdue";
+
+    const isPastDeadline = useMemo(() => new Date().getTime() > date.getTime(), [date]);
+    const isOverdue = isPastDeadline && !isCompleted;
+    const effectiveStatus = isOverdue ? "Overdue" : status;
+
+    const priorityStyles: Style = taskPriorityStyle(priority);
+    const categoryStyles: Style = taskCategoryStyle(category);
+    const { Icon, styles } = taskIconStyle(effectiveStatus);
 
     const deleteTask = async() => {
         try {
@@ -49,7 +51,13 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
         }
     };
 
-    const updateTask = async(task: any) => {
+    const updateTask = useCallback(async(updatedFields: Partial<Task>) => {
+
+        const formattedFields = {
+            ...updatedFields,
+            date: updatedFields.date ? new Date(updatedFields.date) : date
+        };
+        
         // e.preventDefault();
 
         // const formData = new FormData(e.currentTarget);
@@ -64,14 +72,14 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
         // };
         try {
 
-            const updatedTask = { ...task, status, date: new Date(task.date)}
+            const fullUpdatedTask = { id, title, description, category, status, priority, ...formattedFields }
 
             const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/update/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(updatedTask)
+                body: JSON.stringify(fullUpdatedTask)
             });
 
             if (!response.ok) {
@@ -82,7 +90,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
 
             // Update the task in the state
             setTasks((prevState) =>
-                prevState.map((task) => task.id === id ? updatedTask : task)
+                prevState.map((task) => task.id === id ? fullUpdatedTask : task)
             );
 
             // Close the form
@@ -92,51 +100,19 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
         } catch (error) {
             console.log(error);
         }
+    }, [id, title, description, category, status, priority, date, user?.id, setTasks, setResponse]);
+
+    const toggleStatus = () => {
+        // Use the mapping logic. If Overdue -> Completed.
+        const newStatus = nextStep[effectiveStatus as keyof typeof nextStep] || "Not started";
+        updateTask({ status: newStatus });
     }
 
-    const toggleStatus = async() => {
-
-        let newStatus: string;
-
-        // Logic: If it's late and Not Started, it becomes Overdue.
-        // Otherwise, follow the normal cycle.
-        if (ellipse > 0) {
-            if(status !== "Completed") {
-                newStatus = "Overdue";
-            } else {
-                newStatus = "Completed";
-            }
-        } else {
-            newStatus = nextStep[status as keyof typeof nextStep] || "Not started";
+    useEffect(() => {
+        if(isPastDeadline && status !== "Overdue" && status !== "Completed") {
+            updateTask({ status: "Overdue"});
         }
-
-        const taskWithNewStatus: Task = { id, title, description, status: newStatus, category, priority, date };
-
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/update/${id}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(taskWithNewStatus)
-            });
-
-            if (!response.ok) {
-                throw new Error(`Failed to update task: ${response.statusText}`);
-            }
-
-            const json = await response.json();
-            setResponse(json.message);
-            console.log(json);
-
-            // Update the task in the state
-            setTasks((prevState) =>
-                prevState.map((task) => task.id === id ? taskWithNewStatus : task)
-            );
-        } catch (error) {
-            console.log("Status Update failed: ", error);
-        }
-    }
+    }, [isPastDeadline, status]);
 
     return (
         <>
@@ -145,11 +121,12 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
                 onClick={() => setIsExpanded(!isExpanded)}
                 className={`task-container
                     ${isInProgress ? "border-indigo-200 dark:border-indigo-800 border-l-4" : "border-gray-100 dark:border-gray-700"}
+                    ${isOverdue ? "bg-red-50/30 dark:bg-red-900/10 border-red-200" : ""}
                     ${isExpanded ? "ring-1 ring-indigo-50 dark:ring-indigo-900/50" : ""}
                 `}
             >
                 <div className="flex items-start gap-3 sm:gap-4">
-                    <button onClick={(e) => {e.stopPropagation(), toggleStatus()}} disabled={isOverdue || (isPastDeadline && isCompleted)} className="mt-1 shrink-0">
+                    <button onClick={(e) => {e.stopPropagation(), toggleStatus()}} className="mt-1 shrink-0">
                         <Icon className={`w-5 h-5 ${styles}`} />
                     </button>
 
@@ -181,7 +158,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
                                 <div className="flex-hor-center gap-1">
                                     <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                     <span>
-                                        {isCompleted ? "Done" : (ellipse < 0 ? "Due" : "Overdue")}: {date.toLocaleString("en-US", { month: "short", day: "numeric" })}
+                                        {isCompleted ? "Finished" : (isOverdue ? "Overdue" : "Due")}: {date.toLocaleString("en-US", { month: "short", day: "numeric" })}
                                     </span>
                                 </div>
                                 <div className="flex-hor-center gap-1">

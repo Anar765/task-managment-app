@@ -3,7 +3,7 @@ import { ChevronDown, Loader } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { updateTask: (task: any) => void, setIsUpdateTaskFormOpen: (state: boolean) => void, task: Task }) => {
+const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { updateTask: (updatedFields: any) => void, setIsUpdateTaskFormOpen: (state: boolean) => void, task: Task }) => {
 
     const [priorityDropdown, setPriorityDropdown] = useState(false);
     const [categoryDropdown, setCategoryDropdown] = useState(false);
