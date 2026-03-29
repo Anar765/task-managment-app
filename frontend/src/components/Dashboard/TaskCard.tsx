@@ -53,9 +53,19 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
 
     const updateTask = useCallback(async(updatedFields: Partial<Task>) => {
 
+        const newDate = updatedFields.date ? new Date(updatedFields.date) : new Date(date);
+        const now = new Date();
+        
+        let targetStatus = updatedFields.status || status;
+
+        if (status === "Overdue" && newDate > now && !updatedFields.status) {
+            targetStatus = "Not started";
+        }
+
         const formattedFields = {
             ...updatedFields,
-            date: updatedFields.date ? new Date(updatedFields.date) : date
+            status: targetStatus,
+            date: newDate
         };
         
         // e.preventDefault();
@@ -72,7 +82,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
         // };
         try {
 
-            const fullUpdatedTask = { id, title, description, category, status, priority, ...formattedFields }
+            const fullUpdatedTask = { id, title, description, category, priority, ...formattedFields }
 
             const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/update/${id}`, {
                 method: "PATCH",
