@@ -1,12 +1,19 @@
 import type { Task } from "../../types/tasks.type";
 import { ChevronDown, Loader } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
+import useClickOutside from "../../hooks/useClickOutside";
 
 const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { updateTask: (updatedFields: any) => void, setIsUpdateTaskFormOpen: (state: boolean) => void, task: Task }) => {
 
     const [priorityDropdown, setPriorityDropdown] = useState(false);
     const [categoryDropdown, setCategoryDropdown] = useState(false);
+    const priorityDropdownRef = useRef<HTMLDivElement>(null);
+    const categoryDropdownRef = useRef<HTMLDivElement>(null);
+    
+    useClickOutside(priorityDropdown, setPriorityDropdown, priorityDropdownRef);
+    useClickOutside(categoryDropdown, setCategoryDropdown, categoryDropdownRef);
+
     const {
         register,
         handleSubmit,
@@ -63,7 +70,7 @@ const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { update
                 </div>
 
                 {/* Category Section */}
-                <div className="flex flex-col gap-1.5">
+                <div className="flex flex-col gap-1.5" ref={categoryDropdownRef}>
                     <label htmlFor="category" className="text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
                     <div className="relative">
                         <select 
@@ -91,7 +98,7 @@ const UpdateTaskForm = ({ task, updateTask, setIsUpdateTaskFormOpen } : { update
 
                 <div className="grid grid-cols-2 gap-4">
                     {/* Priority */}
-                    <div className="flex flex-col gap-1.5">
+                    <div className="flex flex-col gap-1.5" ref={priorityDropdownRef}>
                         <label htmlFor="priority" className="text-sm font-medium text-gray-700 dark:text-gray-300">Priority</label>
                         <div className="relative">
                             <select 
