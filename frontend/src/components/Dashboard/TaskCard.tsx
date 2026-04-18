@@ -32,7 +32,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
 
     const deleteTask = async() => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/delete/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_UR}/${user?.id}/tasks/delete/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
@@ -53,10 +53,12 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
 
     const updateTask = useCallback(async(updatedFields: Partial<Task>) => {
 
+        const isStatusUpdated = updatedFields.status !== undefined;
         const newDate = updatedFields.date ? new Date(updatedFields.date) : new Date(date);
         const now = new Date();
         
         let targetStatus = updatedFields.status || status;
+        console.log(updatedFields.status);
 
         if (status === "Overdue" && newDate > now && !updatedFields.status) {
             targetStatus = "Not started";
@@ -105,7 +107,11 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
 
             // Close the form
             setIsUpdateTaskFormOpen(false);
-            setResponse(json.message);
+
+            if(!isStatusUpdated) {
+                setResponse(json.message);
+            }
+
             console.log(json);
         } catch (error) {
             console.log(error);
