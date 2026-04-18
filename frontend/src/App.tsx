@@ -9,6 +9,7 @@ import NotFoundPage from "./pages/Error/NotFoundPage.tsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import type { User } from "./types/user.type.ts";
 import type { Task } from "./types/tasks.type.ts";
+import type { ResponseProps } from "./types/FeedbackType.type.ts";
 
 interface Context {
   tasks: Task[],
@@ -16,8 +17,8 @@ interface Context {
   setTasks: Dispatch<SetStateAction<Task[]>>,
   isDarkMode: boolean,
   setIsDarkMode: Dispatch<SetStateAction<boolean>>,
-  response: string,
-  setResponse: Dispatch<SetStateAction<string>>
+  response: ResponseProps | null,
+  setResponse: Dispatch<SetStateAction<ResponseProps | null>>
 }
 
 export const AppContext = createContext<Context>({
@@ -26,7 +27,10 @@ export const AppContext = createContext<Context>({
   setTasks: () => {},
   isDarkMode: false,
   setIsDarkMode: () => {},
-  response: "",
+  response: {
+    type: "success",
+    message: ""
+  },
   setResponse: () => {}
 });
 
@@ -41,7 +45,7 @@ const App = () => {
     const savedTheme = localStorage.getItem("DevTasksTheme");
     return savedTheme !== null ? JSON.parse(savedTheme) : false;
   });
-  const [response, setResponse] = useState("");
+  const [response, setResponse] = useState<ResponseProps | null>(null);
 
   useEffect(() => {
     const getTasks = async () => {

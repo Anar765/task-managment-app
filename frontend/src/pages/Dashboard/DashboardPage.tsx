@@ -62,7 +62,10 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
       const json = await response.json();
 
       setTasks((prevState) => [...prevState, newTask]);
-      setResponse(json.message);
+      setResponse({
+        type: "success",
+        message: json.message
+      });
       setIsNewTaskFormOpen(false);
 
       console.log(json);

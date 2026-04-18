@@ -44,7 +44,10 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
             }
 
             const json = await response.json();
-            setResponse(json.message);
+            setResponse({
+                type: "success",
+                message: json.message
+            });
             console.log(json);
         } catch(error) {
             console.log(error);
@@ -109,7 +112,10 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
             setIsUpdateTaskFormOpen(false);
 
             if(!isStatusUpdated) {
-                setResponse(json.message);
+                setResponse({
+                    type: "success",
+                    message: json.message
+                });
             }
 
             console.log(json);
