@@ -70,6 +70,10 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
 
       console.log(json);
     } catch(error) {
+      setResponse({
+        type: "error",
+        message: "Something went wrong. Please try again later"
+      });
       console.log(error);
     }
   }

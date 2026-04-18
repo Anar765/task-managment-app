@@ -39,9 +39,14 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
                 }
             });
 
-            if(response.ok) {
-                setTasks((prevState) => prevState.filter(task => task.id !== id))
+            if(!response.ok) {
+                setResponse({
+                    type: "error",
+                    message: response.statusText
+                });
             }
+
+            setTasks((prevState) => prevState.filter(task => task.id !== id));
 
             const json = await response.json();
             setResponse({
@@ -50,6 +55,10 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
             });
             console.log(json);
         } catch(error) {
+            setResponse({
+                type: "error",
+                message: "Something went wrong. Please try again later"
+            });
             console.log(error);
         }
     };
@@ -120,6 +129,10 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
 
             console.log(json);
         } catch (error) {
+            setResponse({
+                type: "error",
+                message: "Something went wrong. Please try again later"
+            });
             console.log(error);
         }
     }, [id, title, description, category, status, priority, date, user?.id, setTasks, setResponse]);

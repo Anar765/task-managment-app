@@ -46,7 +46,10 @@ const SignUpPage = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        setResponse(data.message);
+        setResponse({
+          type: "error",
+          message: data.message
+        });
         throw new Error(`Status: ${res.status}`);
       }
 
@@ -56,6 +59,10 @@ const SignUpPage = () => {
       navigate(`/dashboard/${data.user.username}`); 
 
     } catch (err) {
+      setResponse({
+        type: "error",
+        message: "Something went wrong. Please try again later"
+      });
       console.error("Signup failed:", err);
     }
   };
@@ -113,7 +120,7 @@ const SignUpPage = () => {
                 validate: (value) => value === watch('password') || "The passwords do not match"
               })} />
               {errors['confirm-password'] && <p className='text-red-600 dark:text-red-400'>{errors['confirm-password'].message?.toString()}</p> }
-              {(Object.keys(errors).length === 0 && response) && <p className='text-red-600 dark:text-red-400'>{response}</p>}
+              {(Object.keys(errors).length === 0 && response) && <p className='text-red-600 dark:text-red-400'>{response.message}</p>}
               <TermsAndConditions {...register("terms", {
                 required: {
                   value: true,

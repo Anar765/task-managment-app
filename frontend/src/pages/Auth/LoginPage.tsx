@@ -43,16 +43,26 @@ const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
 
       if(!userLoginResponse.ok) {
         console.log(data)
-        setResponse(data.message);
+        setResponse({
+          type: "error",
+          message: data.message
+        });
         throw new Error(`status code - ${userLoginResponse.status}, message - ${userLoginResponse.statusText}`);
       }
 
       localStorage.setItem("user", JSON.stringify(data.user));
-      setResponse("");
+      setResponse({
+        type: "success",
+        message: `Welcome ${data.user.username}`
+      });
       setUser(data.user);
       navigate(`/dashboard/${data.user.username}`)
 
     } catch (error) {
+      setResponse({
+        type: "error",
+        message: "Something went wrong. Please try again later"
+      });
       console.log("Sign in failed: ", error);
     }
   }
@@ -87,7 +97,7 @@ const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
                 }
               })} />
               {errors.password && <p className='text-red-600 dark:text-red-400'>{errors.password.message?.toString()}</p>}
-              {(response && Object.keys(errors).length === 0) && <p className='text-red-600 dark:text-red-400'>{response}</p>}
+              {(response && Object.keys(errors).length === 0) && <p className='text-red-600 dark:text-red-400'>{response.message}</p>}
               <AuthOptions />
 
               {/* Submit Button */}

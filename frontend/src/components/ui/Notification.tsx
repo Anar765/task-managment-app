@@ -24,7 +24,7 @@ const Notification = () => {
     if(!response) return null;
 
     return (
-        <div className="fixed w-fit max-w-100 top-10 right-1/2 translate-x-1/2 rounded py-3 px-4 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white text-center z-50 flex items-center justify-center gap-2 shadow-xl border border-gray-100 dark:border-gray-700 animate-appearance">
+        <div className="fixed w-fit max-w-100 top-10 right-1/2 translate-x-1/2 rounded py-3 px-4 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white text-center z-100 flex items-center justify-center gap-2 shadow-xl border border-gray-100 dark:border-gray-700 animate-appearance">
             <Icon className={`w-5 h-5 ${color}`} />
             <span className="text-sm font-medium">{response.message}</span>
         </div>

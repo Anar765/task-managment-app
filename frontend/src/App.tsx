@@ -54,6 +54,10 @@ const App = () => {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/get`);
 
         if(!response.ok) {
+          setResponse({
+            type: "error",
+            message: response.statusText
+          })
           throw new Error(`status code - ${response.status}, message - ${response.statusText}`);
         }
 
@@ -64,6 +68,10 @@ const App = () => {
           date: new Date(task.date)
         })));
       } catch (error) {
+        setResponse({
+          type: "error",
+          message: "Something went wrong. Please try again later"
+        });
         console.log(error);
       }
     };
