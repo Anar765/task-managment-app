@@ -32,7 +32,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
 
     const deleteTask = async() => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_UR}/${user?.id}/tasks/delete/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/delete/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
