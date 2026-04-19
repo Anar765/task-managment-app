@@ -1,4 +1,15 @@
 import { User } from "../models/user.model.js";
+import path from "node:path";
+import fsPromises from "node:fs/promises";
+import fs from "node:fs";
+
+/**
+ * The purpose of keeping user data in a separate JSON file is to avoid recreating users every time I forget a password and to practice working with fsPromises and path in Node.js. 
+ * !!! However, storing plain text passwords is not secure and should only be used for learning purposes, not in real applications.
+ */
+
+const __dirname = import.meta.dirname;
+const usersDataFilePath = path.join(__dirname, '..', 'users.json');
 
 const registerUser = async (req, res) => {
     try {
@@ -18,6 +29,20 @@ const registerUser = async (req, res) => {
                 user
             });
         }
+
+        if(!fs.existsSync(usersDataFilePath)) {
+            await fsPromises.writeFile(usersDataFilePath, "[]");
+        }
+
+        const usersData = await fsPromises.readFile(usersDataFilePath);
+
+        if(!usersData) {
+            await fsPromises.writeFile(usersDataFilePath, "[]");
+        }
+
+        const parsedData = JSON.parse(usersData);
+        parsedData.push({username, email, role, password});
+        await fsPromises.writeFile(usersDataFilePath, JSON.stringify(parsedData, null, 2));
 
         const user = await User.create({
             username,
