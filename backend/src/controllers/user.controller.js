@@ -2,6 +2,7 @@ import { User } from "../models/user.model.js";
 import path from "node:path";
 import fsPromises from "node:fs/promises";
 import fs from "node:fs";
+import bcrypt from "bcrypt";
 
 /**
  * The purpose of keeping user data in a separate JSON file is to avoid recreating users every time I forget a password and to practice working with fsPromises and path in Node.js. 
@@ -10,6 +11,7 @@ import fs from "node:fs";
 
 const __dirname = import.meta.dirname;
 const usersDataFilePath = path.join(__dirname, '..', 'users.json');
+const salt = 10;
 
 const registerUser = async (req, res) => {
     try {
@@ -44,11 +46,13 @@ const registerUser = async (req, res) => {
         parsedData.push({username, email, role, password});
         await fsPromises.writeFile(usersDataFilePath, JSON.stringify(parsedData, null, 2));
 
+        const hashedPassword = await bcrypt.hash(password, salt);
+
         const user = await User.create({
             username,
             email,
             role,
-            password,
+            password: hashedPassword,
             loggedIn: false
         });
 
@@ -83,20 +87,37 @@ const loginUser = async(req, res) => {
             });
         }
 
-        if(existing.password !== password) {
-            return res.status(403).json({
-                message: "Invalid email or password"
+        const isMatch = await bcrypt.compare(password, existing.password);
+
+        if(isMatch) {
+            return res.status(202).json({
+                message: "Login successful",
+                user: {
+                    id: existing._id,
+                    username: existing.username,
+                    email
+                }
             });
         }
 
-        res.status(202).json({
-            message: "Login successful",
-            user: {
-                id: existing._id,
-                username: existing.username,
-                email
-            }
-        })
+        if(password === existing.password) {
+            existing.password = await bcrypt.hash(password, salt);
+
+            await existing.save();
+
+            return res.status(202).json({
+                message: "Login successful",
+                user: {
+                    id: existing._id,
+                    username: existing.username,
+                    email
+                }
+            });
+        }
+        
+        res.status(403).json({
+            message: "Invalid email or password"
+        });
 
     } catch(error) {
         res.status(500).json({
