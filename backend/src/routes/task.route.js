@@ -1,7 +1,10 @@
 import { Router } from "express"
 import { createTask, deleteTask, getTasks, updateTask } from "../controllers/task.controller.js";
+import verifyJWT from "../middleware/verifyJWT.js";
 
-const taskRouter = Router({ mergeParams: true });
+const taskRouter = Router();
+
+taskRouter.use(verifyJWT);
 
 taskRouter.route('/create').post(createTask);
 taskRouter.route('/get').get(getTasks);
