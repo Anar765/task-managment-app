@@ -14,6 +14,6 @@ app.use(cors({
 }))
 
 app.use("/api/users", userRouter);
-app.use("/api/:userId/tasks", taskRouter);
+app.use("/api/tasks", taskRouter);
 
 export default app;
