@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 const createTask = async(req, res) => {
     try {
         const { title, description, category, status, priority, date } = req.body;
-        const { userId } = req.params;
+        const userId = req.userId;
 
         if(!title || !description || !category || !status || !priority || !date) {
             return res.status(400).json({
@@ -46,13 +46,7 @@ const createTask = async(req, res) => {
 
 const getTasks = async(req, res) => {
     try {
-        const { userId } = req.params;
-
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({
-                message: "Invalid user ID"
-            });
-        }
+        const userId = req.userId;
 
         const tasks = await Task.find({ userId });
         res.status(200).json(tasks.map((task, _) => ({
@@ -75,13 +69,8 @@ const getTasks = async(req, res) => {
 const updateTask = async(req, res) => {
     try {
 
-        const { userId, taskId } = req.params;
-
-        if (!mongoose.Types.ObjectId.isValid(taskId)) {
-            return res.status(400).json({
-                message: "Invalid task ID"
-            });
-        }
+        const { taskId } = req.params;
+        const userId = req.userId;
 
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({
@@ -118,13 +107,8 @@ const updateTask = async(req, res) => {
 
 const deleteTask = async(req, res) => {
     try {
-        const { userId, taskId } = req.params;
-
-        if(!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({
-                message: "Invalid user ID format"
-            });
-        }
+        const { taskId } = req.params;
+        const userId = req.userId;
 
         if(!mongoose.Types.ObjectId.isValid(taskId)) {
             return res.status(400).json({
