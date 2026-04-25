@@ -3,6 +3,7 @@ import path from "node:path";
 import fsPromises from "node:fs/promises";
 import fs from "node:fs";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 /**
  * The purpose of keeping user data in a separate JSON file is to avoid recreating users every time I forget a password and to practice working with fsPromises and path in Node.js. 
@@ -89,34 +90,47 @@ const loginUser = async(req, res) => {
 
         const isMatch = await bcrypt.compare(password, existing.password);
 
-        if(isMatch) {
-            return res.status(202).json({
-                message: "Login successful",
-                user: {
-                    id: existing._id,
-                    username: existing.username,
-                    email
-                }
+        if(!isMatch && password !== existing.password) {
+            return res.status(403).json({
+                message: "Invalid email or password"
             });
         }
 
         if(password === existing.password) {
             existing.password = await bcrypt.hash(password, salt);
-
             await existing.save();
-
-            return res.status(202).json({
-                message: "Login successful",
-                user: {
-                    id: existing._id,
-                    username: existing.username,
-                    email
-                }
-            });
         }
-        
-        res.status(403).json({
-            message: "Invalid email or password"
+
+        const accessToken = jwt.sign(
+            { id: existing._id, username: existing.username },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: "15m" }
+        );
+
+        const refreshToken = jwt.sign(
+            { id: existing._id },
+            process.env.REFRESH_TOKEN_SECRET,
+            { expiresIn: "7d" }
+        );
+
+        existing.refreshToken = refreshToken;
+        await existing.save();
+
+        res.cookie('jwt', refreshToken, {
+            httpOnly: true,
+            // secure: true, -> Use this property after deploying
+            sameSite: "None",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        return res.status(202).json({
+            message: "Login successful",
+            accessToken,
+            user: {
+                id: existing._id,
+                username: existing.username,
+                email
+            }
         });
 
     } catch(error) {
