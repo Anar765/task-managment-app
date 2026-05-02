@@ -35,7 +35,7 @@ const SignUpPage = () => {
 
     try {
       // 2. Perform the POST request directly here
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/register`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'

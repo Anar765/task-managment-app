@@ -10,20 +10,25 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import type { User } from "./types/user.type.ts";
 import type { Task } from "./types/tasks.type.ts";
 import type { ResponseProps } from "./types/FeedbackType.type.ts";
+import apiFetch from "./hooks/apiFetch.ts";
 
 interface Context {
-  tasks: Task[],
   user: User | undefined,
+  setUser: Dispatch<SetStateAction<User | undefined>>
+  tasks: Task[],
   setTasks: Dispatch<SetStateAction<Task[]>>,
   isDarkMode: boolean,
   setIsDarkMode: Dispatch<SetStateAction<boolean>>,
   response: ResponseProps | null,
-  setResponse: Dispatch<SetStateAction<ResponseProps | null>>
+  setResponse: Dispatch<SetStateAction<ResponseProps | null>>,
+  accessToken: string | null,
+  setAccessToken: Dispatch<SetStateAction<string | null>>
 }
 
 export const AppContext = createContext<Context>({
-  tasks: [],
   user: undefined,
+  setUser: () => {},
+  tasks: [],
   setTasks: () => {},
   isDarkMode: false,
   setIsDarkMode: () => {},
@@ -31,7 +36,9 @@ export const AppContext = createContext<Context>({
     type: "success",
     message: ""
   },
-  setResponse: () => {}
+  setResponse: () => {},
+  accessToken: null,
+  setAccessToken: () => {}
 });
 
 const App = () => {
@@ -46,12 +53,47 @@ const App = () => {
     return savedTheme !== null ? JSON.parse(savedTheme) : false;
   });
   const [response, setResponse] = useState<ResponseProps | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(() => {
+    const savedToken = localStorage.getItem("accessToken");
+    return savedToken ? JSON.parse(savedToken) : null;
+  });
+
+  useEffect(() => {
+    const persistLogin = async() => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/refresh`, {
+          method: "GET",
+          credentials: "include"
+        });
+
+        if(res.ok) {
+          const data = await res.json();
+          setAccessToken(data.accessToken);
+          localStorage.setItem("accessToken", JSON.stringify(data.accessToken));
+        }
+      } catch (error) {
+        console.log("No active session found.");
+      }
+    };
+
+    if(!accessToken) persistLogin();
+  }, []);
 
   useEffect(() => {
     const getTasks = async () => {
-      if(!user) return;
+      if(!accessToken) return;
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/get`);
+        const response = await apiFetch(
+          `${import.meta.env.VITE_API_URL}/tasks/get`,
+          {},
+          accessToken,
+          (newToken) => setAccessToken(newToken),
+          () => {
+            setUser(undefined);
+            setAccessToken(null);
+            localStorage.removeItem("user");
+          }
+        );
 
         if(!response.ok) {
           setResponse({
@@ -77,7 +119,7 @@ const App = () => {
     };
 
     getTasks();
-  }, [user]);
+  }, [accessToken]);
 
   useEffect(() => {
     if(isDarkMode) {
@@ -90,7 +132,7 @@ const App = () => {
   }, [isDarkMode]);
 
   return (
-    <AppContext.Provider value={{ tasks, user, setTasks, isDarkMode, setIsDarkMode, response, setResponse }}>
+    <AppContext.Provider value={{ user, setUser, tasks, setTasks, isDarkMode, setIsDarkMode, response, setResponse, accessToken, setAccessToken }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />

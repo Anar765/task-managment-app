@@ -10,10 +10,11 @@ import { useForm } from 'react-hook-form';
 import { useContext } from 'react';
 import { AppContext } from '../../App.tsx';
 import { Loader } from 'lucide-react';
+import apiFetch from '../../hooks/apiFetch.ts';
 
-const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
+const LoginPage = ({ setUser } : { setUser: (state: User | undefined) => void }) => {
 
-  const { response, setResponse } = useContext(AppContext)
+  const { response, setResponse, accessToken, setAccessToken } = useContext(AppContext)
   const navigate = useNavigate();
   const {
     register,
@@ -31,13 +32,32 @@ const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
     // };
 
     try {
-      const userLoginResponse = await fetch(`${import.meta.env.VITE_API_URL}/users/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
+      // const userLoginResponse = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(userData),
+      //   credentials: "include"
+      // });
+
+      const userLoginResponse = await apiFetch(
+        `${import.meta.env.VITE_API_URL}/auth/login`,
+        {
+          method: "POST",
+          body: JSON.stringify(userData),
+          credentials: "include"
         },
-        body: JSON.stringify(userData)
-      });
+        accessToken,
+        (newToken) => setAccessToken(newToken),
+        () => {
+          setAccessToken(null);
+          setUser(undefined);
+          localStorage.removeItem("user");
+          localStorage.removeItem("accessToken");
+
+        }
+      );
       
       const data = await userLoginResponse.json();
 
@@ -45,10 +65,13 @@ const LoginPage = ({ setUser } : { setUser: (state: User) => void }) => {
         console.log(data)
         setResponse({
           type: "error",
-          message: data.message
+          message: data.message || "Invalid credentials"
         });
         throw new Error(`status code - ${userLoginResponse.status}, message - ${userLoginResponse.statusText}`);
       }
+
+      setAccessToken(data.accessToken);
+      localStorage.setItem("accessToken", JSON.stringify(data.accessToken));
 
       localStorage.setItem("user", JSON.stringify(data.user));
       setResponse({

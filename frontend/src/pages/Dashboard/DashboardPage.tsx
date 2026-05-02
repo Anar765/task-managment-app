@@ -11,11 +11,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../../App";
 import type { FilterParams } from "../../types/filterParams.type";
 import Notification from "../../components/ui/Notification";
+import apiFetch from "../../hooks/apiFetch.ts";
 
 const DashboardPage = ({ user } : { user: User | undefined }) => {
   const { username } = useParams();
   const navigate = useNavigate();
-  const { setTasks, setResponse } = useContext(AppContext);
+  const { setTasks, setResponse, accessToken, setAccessToken, setUser } = useContext(AppContext);
 
   const [searchTask, setSearchTask] = useState("");
   const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(false);
@@ -36,24 +37,21 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
     const newTask: Task = { ...task, status: "Not completed", date: new Date(task.date) }
 
     try {
-      // const formData = new FormData(e.currentTarget)
-
-      // const task: Task = {
-      //   title: formData.get("title") as string,
-      //   description: formData.get("description") as string,
-      //   status: "Not started",
-      //   priority: formData.get("priority") as string,
-      //   category: formData.get("category") as string,
-      //   date: new Date(formData.get("date") as string)
-      // };
-
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await apiFetch(
+        `${import.meta.env.VITE_API_URL}/tasks/create`,
+        {
+          method: "POST",
+          body: JSON.stringify(newTask)
         },
-        body: JSON.stringify(newTask)
-      });
+        accessToken,
+        (newToken) => setAccessToken(newToken),
+        () => {
+          setUser(undefined);
+          setAccessToken(null);
+          navigate('/login');
+          localStorage.removeItem("user");
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Failed to create task: ${response.statusText}`);

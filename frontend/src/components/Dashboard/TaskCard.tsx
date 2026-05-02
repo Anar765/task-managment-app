@@ -4,6 +4,7 @@ import type { Task } from "../../types/tasks.type";
 import { taskCategoryStyle, taskIconStyle, taskPriorityStyle, type Style } from "../../util/getTaskStyles";
 import { AppContext } from "../../App";
 import UpdateTaskForm from "./UpdateTaskForm";
+import apiFetch from "../../hooks/apiFetch";
 
 const nextStep = {
     "Not started": "In progress",
@@ -13,7 +14,7 @@ const nextStep = {
 }
 
 const TaskCard = ({id, title, description, category, status, priority, date}: Task) => {
-    const { user, setTasks, setResponse } = useContext(AppContext);
+    const { user, setTasks, setResponse, accessToken, setAccessToken, setUser } = useContext(AppContext);
 
     // 1. State to handle toggle
     const [isExpanded, setIsExpanded] = useState(false);
@@ -32,12 +33,19 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
 
     const deleteTask = async() => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/delete/${id}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json"
+            const response = await apiFetch(
+                `${import.meta.env.VITE_API_URL}/tasks/delete/${id}`,
+                {
+                    method: "DELETE"
+                },
+                accessToken,
+                (newToken) => setAccessToken(newToken),
+                () => {
+                    setUser(undefined);
+                    setAccessToken(null);
+                    localStorage.removeItem("user");
                 }
-            });
+            );
 
             if(!response.ok) {
                 setResponse({
@@ -82,29 +90,24 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
             date: newDate
         };
         
-        // e.preventDefault();
-
-        // const formData = new FormData(e.currentTarget);
-
-        // const updatedTask: Task = {
-        //     title: formData.get("title") as string,
-        //     description: formData.get("description") as string,
-        //     status,
-        //     priority: formData.get("priority") as string,
-        //     category: formData.get("category") as string,
-        //     date: new Date(formData.get("date") as string)
-        // };
         try {
 
             const fullUpdatedTask = { id, title, description, category, priority, ...formattedFields }
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/${user?.id}/tasks/update/${id}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json"
+            const response = await apiFetch(
+                `${import.meta.env.VITE_API_URL}/tasks/update/${id}`,
+                {
+                    method: "PATCH",
+                    body: JSON.stringify(fullUpdatedTask)
                 },
-                body: JSON.stringify(fullUpdatedTask)
-            });
+                accessToken,
+                (newToken) => setAccessToken(newToken),
+                () => {
+                    setUser(undefined);
+                    setAccessToken(null);
+                    localStorage.removeItem("user");
+                }
+            );
 
             if (!response.ok) {
                 throw new Error(`Failed to update task: ${response.statusText}`);
@@ -135,7 +138,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
             });
             console.log(error);
         }
-    }, [id, title, description, category, status, priority, date, user?.id, setTasks, setResponse]);
+    }, [id, title, description, category, status, priority, date, user?.id, setTasks, setResponse, accessToken, setAccessToken, setUser]);
 
     const toggleStatus = () => {
         // Use the mapping logic. If Overdue -> Completed.
