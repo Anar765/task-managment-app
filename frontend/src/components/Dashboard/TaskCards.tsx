@@ -7,7 +7,7 @@ import { Reorder } from "framer-motion";
 const TaskCards = ({ searchTask, filterParams } : { searchTask: string, filterParams: FilterParams }) => {
 
     const { tasks, setTasks } = useContext(AppContext);
-    const filteredTasks = tasks.reverse().filter((task) => {
+    const filteredTasks = tasks.filter((task) => {
         // Check if the search term matches the title
         const matchesSearch = task.title.toLowerCase().includes(searchTask.toLowerCase());
 
@@ -17,7 +17,7 @@ const TaskCards = ({ searchTask, filterParams } : { searchTask: string, filterPa
         const matchesCategory = filterParams.category === "" || task.category === filterParams.category;
 
         return matchesSearch && matchesPriority && matchesStatus && matchesCategory;
-    });
+    }).reverse();
 
     return (
         <>
