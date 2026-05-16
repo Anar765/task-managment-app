@@ -34,7 +34,7 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
 
   const handleNewTaskSubmit = async (task: any) => {
 
-    const newTask: Task = { ...task, status: "Not completed", date: new Date(task.date) }
+    const newTask: Task = { ...task, status: "Not started", date: new Date(task.date) }
 
     try {
       const response = await apiFetch(
