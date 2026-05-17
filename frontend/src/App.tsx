@@ -6,7 +6,7 @@ import SignUpPage from "./pages/Auth/SignUpPage";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
 import HomePage from "./pages/HomePage/HomePage";
 import NotFoundPage from "./pages/Error/NotFoundPage.tsx";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import type { User } from "./types/user.type.ts";
 import type { Task } from "./types/tasks.type.ts";
 import type { ResponseProps } from "./types/FeedbackType.type.ts";
@@ -43,6 +43,7 @@ export const AppContext = createContext<Context>({
 
 const App = () => {
 
+  const navigate = useNavigate();
   const [user, setUser] = useState<User | undefined>(() => {
     const savedUser = localStorage.getItem("user");
     return savedUser ? JSON.parse(savedUser) : undefined;
@@ -91,6 +92,7 @@ const App = () => {
           () => {
             setUser(undefined);
             setAccessToken(null);
+            navigate('/login');
             localStorage.removeItem("user");
           }
         );
@@ -133,17 +135,15 @@ const App = () => {
 
   return (
     <AppContext.Provider value={{ user, setUser, tasks, setTasks, isDarkMode, setIsDarkMode, response, setResponse, accessToken, setAccessToken }}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage setUser={setUser} />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/dashboard/:username" element={<DashboardPage user={user} />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage setUser={setUser} />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/dashboard/:username" element={<DashboardPage user={user} />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </AppContext.Provider>
   );
 }

@@ -10,11 +10,10 @@ import { useForm } from 'react-hook-form';
 import { useContext } from 'react';
 import { AppContext } from '../../App.tsx';
 import { Loader } from 'lucide-react';
-import apiFetch from '../../hooks/apiFetch.ts';
 
 const LoginPage = ({ setUser } : { setUser: (state: User | undefined) => void }) => {
 
-  const { response, setResponse, accessToken, setAccessToken } = useContext(AppContext)
+  const { response, setResponse, setAccessToken } = useContext(AppContext)
   const navigate = useNavigate();
   const {
     register,
@@ -41,21 +40,15 @@ const LoginPage = ({ setUser } : { setUser: (state: User | undefined) => void })
       //   credentials: "include"
       // });
 
-      const userLoginResponse = await apiFetch(
+      const userLoginResponse = await fetch(
         `${import.meta.env.VITE_API_URL}/auth/login`,
         {
           method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify(userData),
           credentials: "include"
-        },
-        accessToken,
-        (newToken) => setAccessToken(newToken),
-        () => {
-          setAccessToken(null);
-          setUser(undefined);
-          localStorage.removeItem("user");
-          localStorage.removeItem("accessToken");
-
         }
       );
       
@@ -82,10 +75,13 @@ const LoginPage = ({ setUser } : { setUser: (state: User | undefined) => void })
       navigate(`/dashboard/${data.user.username}`)
 
     } catch (error) {
-      setResponse({
-        type: "error",
-        message: "Something went wrong. Please try again later"
-      });
+
+      if(!response || response.type !== "error") {
+        setResponse({
+          type: "error",
+          message: "Something went wrong. Please try again later"
+        });
+      }
       console.log("Sign in failed: ", error);
     }
   }

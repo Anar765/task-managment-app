@@ -67,7 +67,12 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
       setIsNewTaskFormOpen(false);
 
       console.log(json);
-    } catch(error) {
+    } catch(error: any) {
+
+      if(error.message === "Session Expired") {
+        return;
+      }
+
       setResponse({
         type: "error",
         message: "Something went wrong. Please try again later"

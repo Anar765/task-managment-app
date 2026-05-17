@@ -32,9 +32,12 @@ const apiFetch = async (
                 response = await fetch(url, { ...options, headers: retryHeaders });
             } else {
                 onLogout();
+                return Promise.reject(new Error("Session Expired"));
             }
         } catch (error) {
             console.error("Refresh token error: ", error);
+            onLogout();
+            return Promise.reject(new Error("Session Expired"));
         }
     }
 
