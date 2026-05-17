@@ -59,14 +59,13 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
 
       const json = await response.json();
 
-      setTasks((prevState) => [...prevState, newTask]);
+      setTasks((prevState) => [...prevState, { ...json.task, date: new Date(json.task.date)}]);
       setResponse({
         type: "success",
         message: json.message
       });
       setIsNewTaskFormOpen(false);
 
-      console.log(json);
     } catch(error: any) {
 
       if(error.message === "Session Expired") {
