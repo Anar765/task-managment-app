@@ -16,7 +16,7 @@ const TasksFilter = ({ filterParams, setFilterParams, handleFilterParamsSubmit }
 
   return (
     <div className="flex-between-center mb-4">
-      <h2 className="text-xl font-bold text-gray-900">All Tasks</h2>
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white">All Tasks</h2>
       
       <div className="relative">
         <button 
