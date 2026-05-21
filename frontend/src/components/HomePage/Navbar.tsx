@@ -49,14 +49,14 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu Dropdown */}
-      <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-72 border-b border-gray-200' : 'max-h-0'}`}>
-        <div className="px-4 pt-2 pb-6 space-y-2 bg-white">
-          <a href="#features" className="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 rounded-md">Features</a>
-          <a href="#benefits" className="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 rounded-md">Benefits</a>
-          <a href="#" className="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 rounded-md">Docs</a>
-          <div className="pt-4 flex flex-col gap-2">
-            <Link to="/login" className="w-full text-center py-2 text-gray-700 font-medium">Sign in</Link>
-            <Link to="/signup" className="w-full text-center py-2 bg-indigo-600 text-white rounded-lg font-medium">Get Started</Link>
+      <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-72 border-b border-gray-200 dark:border-gray-700' : 'max-h-0'}`}>
+        <div className="px-4 pt-2 pb-6 space-y-2 bg-white dark:bg-gray-800">
+          <a href="#features" className="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors">Features</a>
+          <a href="#benefits" className="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors">Benefits</a>
+          <a href="#" className="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors">Docs</a>
+          <div className="pt-4 flex flex-col gap-2 border-t border-gray-100 dark:border-gray-700">
+            <Link to="/login" className="w-full text-center py-2 text-gray-700 dark:text-gray-300 dark:hover:text-white font-medium transition-colors">Sign in</Link>
+            <Link to="/signup" className="w-full text-center py-2 bg-indigo-600 dark:bg-indigo-500 text-white rounded-lg font-medium hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-all shadow-sm">Get Started</Link>
           </div>
         </div>
       </div>
