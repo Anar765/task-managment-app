@@ -29,7 +29,7 @@ const registerUser = async (req, res) => {
         if(existing) {
             return res.status(400).json({
                 message: "An account with this email already exists",
-                user
+                existing
             });
         }
 
