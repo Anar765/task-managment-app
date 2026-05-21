@@ -21,6 +21,8 @@ interface Context {
   setIsDarkMode: Dispatch<SetStateAction<boolean>>,
   response: ResponseProps | null,
   setResponse: Dispatch<SetStateAction<ResponseProps | null>>,
+  authErrorMsg: string,
+  setAuthErrorMsg: Dispatch<SetStateAction<string>>,
   accessToken: string | null,
   setAccessToken: Dispatch<SetStateAction<string | null>>
 }
@@ -37,6 +39,8 @@ export const AppContext = createContext<Context>({
     message: ""
   },
   setResponse: () => {},
+  authErrorMsg: "",
+  setAuthErrorMsg: () => {},
   accessToken: null,
   setAccessToken: () => {}
 });
@@ -54,6 +58,7 @@ const App = () => {
     return savedTheme !== null ? JSON.parse(savedTheme) : false;
   });
   const [response, setResponse] = useState<ResponseProps | null>(null);
+  const [authErrorMsg, setAuthErrorMsg] = useState<string>("");
   const [accessToken, setAccessToken] = useState<string | null>(() => {
     const savedToken = localStorage.getItem("accessToken");
     return savedToken ? JSON.parse(savedToken) : null;
@@ -111,11 +116,19 @@ const App = () => {
           ...task,
           date: new Date(task.date)
         })));
-      } catch (error) {
+      } catch (error: any) {
+        if(error.message === "Session Expired") {
+          return setResponse({
+            type: "warning",
+            message: "Session expired. Please log in again"
+          });
+        }
+
         setResponse({
           type: "error",
-          message: "Something went wrong. Please try again later"
-        });
+          message: "Something was wrong. Please try again later"
+        })
+
         console.log(error);
       }
     };
@@ -134,7 +147,7 @@ const App = () => {
   }, [isDarkMode]);
 
   return (
-    <AppContext.Provider value={{ user, setUser, tasks, setTasks, isDarkMode, setIsDarkMode, response, setResponse, accessToken, setAccessToken }}>
+    <AppContext.Provider value={{ user, setUser, tasks, setTasks, isDarkMode, setIsDarkMode, response, setResponse, authErrorMsg, setAuthErrorMsg, accessToken, setAccessToken }}>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage setUser={setUser} />} />

@@ -8,13 +8,14 @@ import FullNameField from '../../components/Auth/FullNameField';
 import ConfirmPasswordField from '../../components/Auth/ConfirmPasswordField';
 import RoleAndPositionField from '../../components/Auth/RoleAndPositionField';
 import TermsAndConditions from '../../components/Auth/TermsAndConditions';
+import Notification from '../../components/ui/Notification';
 import { useForm } from 'react-hook-form';
 import { useContext } from 'react';
 import { AppContext } from '../../App';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
-  const { response, setResponse } = useContext(AppContext);
+  const { setResponse, authErrorMsg, setAuthErrorMsg } = useContext(AppContext);
 
   const {
     register,
@@ -51,17 +52,14 @@ const SignUpPage = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        setResponse({
-          type: "error",
-          message: data.message
-        });
-        throw new Error(`Status: ${res.status}`);
+        setAuthErrorMsg(data.message || "Invalid credentials");
+        return new Error(`Status: ${res.status}`);
       }
 
       console.log("Success:", data);
 
       // 3. Navigate using the INTERNAL path
-      navigate(`/dashboard/${data.user.username}`); 
+      navigate(`/dashboard/${data.user.username}`);
 
     } catch (err) {
       setResponse({
@@ -74,6 +72,8 @@ const SignUpPage = () => {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-800 dark:via-gray-900 dark:to-purple-900/20 flex items-center justify-center p-4">
+      <Notification />
+
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         <BrandingAndFeatures />
 
@@ -125,7 +125,7 @@ const SignUpPage = () => {
                 validate: (value) => value === watch('password') || "The passwords do not match"
               })} />
               {errors['confirm-password'] && <p className='text-red-600 dark:text-red-400'>{errors['confirm-password'].message?.toString()}</p> }
-              {(Object.keys(errors).length === 0 && response) && <p className='text-red-600 dark:text-red-400'>{response.message}</p>}
+              {(Object.keys(errors).length === 0 && authErrorMsg) && <p className='text-red-600 dark:text-red-400'>{authErrorMsg}</p>}
               <TermsAndConditions {...register("terms", {
                 required: {
                   value: true,

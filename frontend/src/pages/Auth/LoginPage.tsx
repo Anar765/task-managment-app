@@ -5,6 +5,7 @@ import Footer from '../../components/Auth/Footer';
 import EmailField from '../../components/Auth/EmailField';
 import PasswordField from '../../components/Auth/PasswordField';
 import AuthOptions from '../../components/Auth/AuthOptions';
+import Notification from '../../components/ui/Notification.tsx';
 import type { User } from '../../types/user.type.ts';
 import { useForm } from 'react-hook-form';
 import { useContext } from 'react';
@@ -13,7 +14,7 @@ import { Loader } from 'lucide-react';
 
 const LoginPage = ({ setUser } : { setUser: (state: User | undefined) => void }) => {
 
-  const { response, setResponse, setAccessToken } = useContext(AppContext)
+  const { response, setResponse, authErrorMsg, setAuthErrorMsg, setAccessToken } = useContext(AppContext)
   const navigate = useNavigate();
   const {
     register,
@@ -55,12 +56,8 @@ const LoginPage = ({ setUser } : { setUser: (state: User | undefined) => void })
       const data = await userLoginResponse.json();
 
       if(!userLoginResponse.ok) {
-        console.log(data)
-        setResponse({
-          type: "error",
-          message: data.message || "Invalid credentials"
-        });
-        throw new Error(`status code - ${userLoginResponse.status}, message - ${userLoginResponse.statusText}`);
+        setAuthErrorMsg(data.message || "Invalid credentials");
+        return new Error(`status code - ${userLoginResponse.status}, message - ${userLoginResponse.statusText}`);
       }
 
       setAccessToken(data.accessToken);
@@ -88,6 +85,8 @@ const LoginPage = ({ setUser } : { setUser: (state: User | undefined) => void })
 
   return (
     <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-800 dark:via-gray-900 dark:to-purple-900/20 flex items-center justify-center p-4">
+      <Notification />
+
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         <BrandingAndImage />
 
@@ -116,7 +115,7 @@ const LoginPage = ({ setUser } : { setUser: (state: User | undefined) => void })
                 }
               })} />
               {errors.password && <p className='text-red-600 dark:text-red-400'>{errors.password.message?.toString()}</p>}
-              {(response && Object.keys(errors).length === 0) && <p className='text-red-600 dark:text-red-400'>{response.message}</p>}
+              {(authErrorMsg && Object.keys(errors).length === 0) && <p className='text-red-600 dark:text-red-400'>{authErrorMsg}</p>}
               <AuthOptions />
 
               {/* Submit Button */}
