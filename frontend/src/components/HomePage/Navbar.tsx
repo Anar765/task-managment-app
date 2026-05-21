@@ -37,6 +37,7 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
+            <ThemeToggle />
             <button 
               onClick={() => setIsOpen(!isOpen)}
               className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
