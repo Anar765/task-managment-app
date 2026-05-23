@@ -9,6 +9,7 @@ import ConfirmPasswordField from '../../components/Auth/ConfirmPasswordField';
 import RoleAndPositionField from '../../components/Auth/RoleAndPositionField';
 import TermsAndConditions from '../../components/Auth/TermsAndConditions';
 import Notification from '../../components/ui/Notification';
+import PasswordStrengthIndicator from '../../components/Auth/PasswordStrengthIndicator';
 import { useForm } from 'react-hook-form';
 import { useContext } from 'react';
 import { AppContext } from '../../App';
@@ -114,9 +115,29 @@ const SignUpPage = () => {
                 required: {
                   value: true,
                   message: "Password is required"
+                },
+                maxLength: {
+                  value: 25,
+                  message: "Password cannot be longer than 25 characters"
+                },
+                validate: (value) => {
+                  const checks = [
+                    value.length >= 8,
+                    /[A-Z]/.test(value),
+                    /[a-z]/.test(value),
+                    /\d/.test(value),
+                    /[!@#$%^&*(),.?":{}|<>]/.test(value)
+                  ];
+
+                  const passedCount = checks.filter(Boolean).length;
+
+                  return passedCount >= 4 || "Password must meet at least 4 of the strength criteria (length, uppercase, lowercase, numbers, or symbols).";
                 }
               })} />
               {errors.password && <p className='text-red-600 dark:text-red-400'>{errors.password?.message?.toString()}</p>}
+
+              <PasswordStrengthIndicator password={watch("password") || ""} />
+
               <ConfirmPasswordField title='Confirm password' {...register("confirm-password", {
                 required: {
                   value: true,
