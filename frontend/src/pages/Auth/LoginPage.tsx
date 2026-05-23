@@ -48,7 +48,10 @@ const LoginPage = ({ setUser } : { setUser: (state: User | undefined) => void })
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(userData),
+          body: JSON.stringify({
+            email: userData.email.trim(),
+            password: userData.password
+          }),
           credentials: "include"
         }
       );
