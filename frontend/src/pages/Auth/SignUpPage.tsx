@@ -101,6 +101,10 @@ const SignUpPage = () => {
                 required: {
                   value: true,
                   message: "Email is required"
+                },
+                pattern: {
+                  value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Please enter a valid email address"
                 }
               })} />
               {errors.email && <p className='text-red-600 dark:text-red-400'>{errors.email?.message?.toString()}</p>}
