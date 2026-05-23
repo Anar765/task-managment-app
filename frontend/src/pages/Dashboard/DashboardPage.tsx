@@ -27,6 +27,12 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
   });
 
   useEffect(() => {
+    if(!accessToken) {
+      navigate('/login');
+    }
+  }, [accessToken]);
+
+  useEffect(() => {
     if(user && username !== user.username) {
       navigate('/');
     }
