@@ -23,24 +23,7 @@ const LoginPage = ({ setUser } : { setUser: (state: User | undefined) => void })
   } = useForm({ mode: "onBlur" });
 
   const handleUserLogin = async (userData: any) => {
-    // e.preventDefault();
-    // const target = e.target as any;
-
-    // const userData = {
-    //   email: target[0].value,
-    //   password: target[1].value
-    // };
-
     try {
-      // const userLoginResponse = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(userData),
-      //   credentials: "include"
-      // });
-
       const userLoginResponse = await fetch(
         `${import.meta.env.VITE_API_URL}/auth/login`,
         {

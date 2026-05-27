@@ -26,17 +26,8 @@ const SignUpPage = () => {
   } = useForm();
 
   const handleUserSignUpSubmit = async (newUserData: any) => {    
-    // 1. Get data from form targets
-    // const target = e.target as any;
-    // const userData = {
-    //   username: target[0].value,
-    //   email: target[1].value,
-    //   role: target[2].value,
-    //   password: target[3].value
-    // };
-
     try {
-      // 2. Perform the POST request directly here
+      // Perform the POST request directly here
       const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
         method: "POST",
         headers: {
@@ -59,7 +50,7 @@ const SignUpPage = () => {
 
       console.log("Success:", data);
 
-      // 3. Navigate using the INTERNAL path
+      // Navigate using the INTERNAL path
       navigate(`/dashboard/${data.user.username}`);
 
     } catch (err) {
