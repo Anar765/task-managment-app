@@ -1,10 +1,20 @@
 import { Task } from "../models/task.model.js";
 import mongoose from "mongoose";
 
+const tasksLimit = 25;
+
 const createTask = async(req, res) => {
     try {
         const { title, description, category, status, priority, date } = req.body;
         const userId = req.userId;
+
+        const userAllTasks = await Task.find({ userId });
+
+        if(userAllTasks.length >= tasksLimit) {
+            return res.status(422).json({
+                message: `You cannot create more than ${tasksLimit} tasks`
+            });
+        }
 
         if(!title || !description || !category || !status || !priority || !date) {
             return res.status(400).json({

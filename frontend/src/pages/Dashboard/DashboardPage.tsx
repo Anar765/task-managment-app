@@ -59,11 +59,19 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
         }
       );
 
+      const json = await response.json();
+
       if (!response.ok) {
+        if(response.status === 422) {
+          setResponse({
+            type: "warning",
+            message: json.message
+          });
+          return;
+        }
+
         throw new Error(`Failed to create task: ${response.statusText}`);
       }
-
-      const json = await response.json();
 
       setTasks((prevState) => [...prevState, { ...json.task, date: new Date(json.task.date)}]);
       setResponse({
