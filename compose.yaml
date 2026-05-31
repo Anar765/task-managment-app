@@ -1,0 +1,56 @@
+services:
+  web:
+    depends_on:
+      - api
+
+    build: ./frontend
+
+    ports:
+      - 5173:5173
+
+    env_file:
+      - ./frontend/.env
+
+    develop:
+      watch:
+        - path: ./frontend/package.json
+          action: rebuild
+        - path: ./frontend/package-lock.json
+          action: rebuild
+        - path: ./frontend
+          target: /app
+          action: sync
+  api:
+    depends_on:
+      - db
+
+    build: ./backend
+
+    ports:
+      - 5050:5050
+
+    env_file:
+      - ./backend/.env
+
+    develop:
+      watch:
+        - path: ./backend/package.json
+          action: rebuild
+        - path: ./backend/package-lock.json
+          action: rebuild
+        - path: ./backend
+          target: /app
+          action: sync
+
+
+  db:
+    image: mongo:latest
+
+    ports:
+      - 27017:27017
+
+    volumes:
+      - devtasks:/data/db
+
+volumes:
+  devtasks:
