@@ -13,7 +13,7 @@ const BrandingAndImage = () => {
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">DevTasks</h1>
             </div>
             <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
-              Task management built specifically for PERN stack developers
+              Task management built specifically for Full stack developers
             </p>
           </div>
 

@@ -12,7 +12,7 @@ const Hero = () => {
             <div>
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 rounded-full text-sm font-medium mb-6">
                 <Zap className="w-4 h-4" />
-                Built for PERN Stack Developers
+                Built for Full Stack Developers
               </div>
               <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
                 Manage your dev tasks like a <span className="text-indigo-600 dark:text-indigo-400">pro</span>

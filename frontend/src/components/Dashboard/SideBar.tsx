@@ -66,10 +66,10 @@ const SideBar = () => {
 
                 {/* Quick Stats */}
                 <div className="bg-linear-to-br from-indigo-600 to-purple-600 rounded-xl p-6 text-white">
-                    <h3 className="font-semibold mb-2">Today's Progress</h3>
+                    <h3 className="font-semibold mb-2">Overall Progress</h3>
                     <p className="text-3xl font-bold mb-4">{getTasksCompletionPercentage(completedTasks, totalTasks)}%</p>
                     <p className="text-sm text-indigo-100">
-                    You've completed {completedTasks} out of {totalTasks} tasks scheduled for today. Keep up the great work!
+                    You've completed {completedTasks} out of {totalTasks} tasks scheduled overall. Keep up the great work!
                     </p>
                 </div>
             </div>
