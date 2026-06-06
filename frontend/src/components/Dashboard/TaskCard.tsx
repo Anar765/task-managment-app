@@ -3,7 +3,7 @@ import { useContext, useState, useMemo, useCallback, useEffect } from "react";
 import type { Task } from "../../types/tasks.type";
 import { taskCategoryStyle, taskIconStyle, taskPriorityStyle, type Style } from "../../util/getTaskStyles";
 import { AppContext } from "../../App";
-import UpdateTaskForm from "./UpdateTaskForm";
+import TaskForm from "./TaskForm";
 import apiFetch from "../../hooks/apiFetch";
 
 const nextStep = {
@@ -225,7 +225,7 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
                 </div>
             </div>
 
-            {isUpdateTestFormOpen && <UpdateTaskForm updateTask={updateTask} setIsUpdateTaskFormOpen={setIsUpdateTaskFormOpen} task={{title, description, category, status, priority, date}} />}
+            {isUpdateTestFormOpen && <TaskForm  task={{title, description, category, status, priority, date}} handleTaskSubmit={updateTask} setIsTaskFormOpen={setIsUpdateTaskFormOpen} />}
         </>
     )
 }

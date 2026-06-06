@@ -4,7 +4,7 @@ import StatsCards from "../../components/Dashboard/StatsCards";
 import TaskCards from "../../components/Dashboard/TaskCards";
 import { useContext, useEffect, useState } from "react";
 import type { Task } from "../../types/tasks.type";
-import NewTaskForm from "../../components/Dashboard/NewTaskForm";
+import TaskForm from "../../components/Dashboard/TaskForm.tsx";
 import TasksFilter from "../../components/Dashboard/TasksFilter";
 import type { User } from "../../types/user.type";
 import { useNavigate, useParams } from "react-router-dom";
@@ -128,7 +128,7 @@ const DashboardPage = ({ user } : { user: User | undefined }) => {
         </div>
       </div>
 
-      {isNewTaskFormOpen && <NewTaskForm handleNewTaskSubmit={handleNewTaskSubmit} setIsNewTaskFormOpen={setIsNewTaskFormOpen} />}
+      {isNewTaskFormOpen && <TaskForm handleTaskSubmit={handleNewTaskSubmit} setIsTaskFormOpen={setIsNewTaskFormOpen} />}
     </div>
   )
 }

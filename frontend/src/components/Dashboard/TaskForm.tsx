@@ -2,8 +2,9 @@ import { ChevronDown, Loader } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import useClickOutside from "../../hooks/useClickOutside";
+import type { Task } from "../../types/tasks.type";
 
-const NewTaskForm = ({ handleNewTaskSubmit, setIsNewTaskFormOpen }: { handleNewTaskSubmit: (task: any) => void, setIsNewTaskFormOpen: (state: boolean) => void }) => {
+const TaskForm = ({ task, handleTaskSubmit, setIsTaskFormOpen }: { task?: Task, handleTaskSubmit: (task: any) => void, setIsTaskFormOpen: (state: boolean) => void }) => {
 
   const [priorityDropdown, setPriorityDropdown] = useState(false);
   const [categoryDropdown, setCategoryDropdown] = useState(false);
@@ -20,15 +21,15 @@ const NewTaskForm = ({ handleNewTaskSubmit, setIsNewTaskFormOpen }: { handleNewT
   } = useForm();
 
   return (
-    <div className="fixed inset-0 z-50 flex-center p-4 backdrop-blur-sm bg-black/30 dark:bg-black/50 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex-center p-4 backdrop-blur-sm bg-black/30 dark:bg-black/50 animate-in fade-in duration-200 appearance-none">
       <form
-        onSubmit={handleSubmit(handleNewTaskSubmit)}
+        onSubmit={handleSubmit(handleTaskSubmit)}
         noValidate
         className="flex flex-col gap-5 p-8 bg-white dark:bg-gray-800 rounded-2xl w-full max-w-md shadow-2xl border border-gray-100 dark:border-gray-700"
       >
         <div className="space-y-1">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white">Create New Task</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Fill in the details to track your next milestone.</p>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white">{task ? "Update" : "Create New"} Task</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{task ? "Update the details of your task." : "Fill in the details to track your next milestone."}</p>
         </div>
 
         <div className="space-y-4">
@@ -45,6 +46,7 @@ const NewTaskForm = ({ handleNewTaskSubmit, setIsNewTaskFormOpen }: { handleNewT
               })}
               name="title"
               id="title"
+              defaultValue={task?.title}
               placeholder="e.g. Design System"
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all" 
             />
@@ -65,8 +67,9 @@ const NewTaskForm = ({ handleNewTaskSubmit, setIsNewTaskFormOpen }: { handleNewT
                   message: "Write understandable description"
                 }
               })}
-              name="description" 
-              id="description" 
+              name="description"
+              id="description"
+              defaultValue={task?.description}
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all"
             ></textarea>
@@ -88,7 +91,7 @@ const NewTaskForm = ({ handleNewTaskSubmit, setIsNewTaskFormOpen }: { handleNewT
                 id="category"
                 onClick={() => setCategoryDropdown(prevState => !prevState)}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all appearance-none cursor-pointer"
-                defaultValue=""
+                defaultValue={task?.category}
                 required
               >
                 <option value="" disabled className="dark:bg-gray-800">Select a category</option>
@@ -114,6 +117,7 @@ const NewTaskForm = ({ handleNewTaskSubmit, setIsNewTaskFormOpen }: { handleNewT
                   })}
                   name="priority"
                   id="priority"
+                  defaultValue={task?.priority}
                   onClick={() => setPriorityDropdown(prevState => !prevState)}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all appearance-none cursor-pointer"
                 >
@@ -136,6 +140,7 @@ const NewTaskForm = ({ handleNewTaskSubmit, setIsNewTaskFormOpen }: { handleNewT
                 })}
                 name="date"
                 id="date"
+                defaultValue={task ? new Date(task.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white scheme-light dark:scheme-dark" 
               />
               {errors.date && <p className="text-red-600">{errors.date?.message?.toString()}</p>}
@@ -148,7 +153,7 @@ const NewTaskForm = ({ handleNewTaskSubmit, setIsNewTaskFormOpen }: { handleNewT
           <button 
             type="button"
             disabled={isSubmitting}
-            onClick={() => setIsNewTaskFormOpen(false)}
+            onClick={() => setIsTaskFormOpen(false)}
             className="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-xl transition-colors disabled:opacity-50"
           >
             Cancel
@@ -161,10 +166,10 @@ const NewTaskForm = ({ handleNewTaskSubmit, setIsNewTaskFormOpen }: { handleNewT
             {isSubmitting ? (
               <>
                 <Loader className="w-4 h-4 animate-spin" />
-                <span>Saving...</span>
+                <span>{task ? "Updating" : "Saving"}...</span>
               </>
             ): (
-              "Save Task"
+              (task ? "Update Task " : "Save Task")
             )}
           </button>
         </div>
@@ -173,4 +178,4 @@ const NewTaskForm = ({ handleNewTaskSubmit, setIsNewTaskFormOpen }: { handleNewT
   )
 }
 
-export default NewTaskForm
+export default TaskForm;
