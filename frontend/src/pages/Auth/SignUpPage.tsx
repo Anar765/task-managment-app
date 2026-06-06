@@ -48,8 +48,6 @@ const SignUpPage = () => {
         return new Error(`Status: ${res.status}`);
       }
 
-      console.log("Success:", data);
-
       // Navigate using the INTERNAL path
       navigate(`/dashboard/${data.user.username}`);
 

@@ -61,7 +61,6 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
                 type: "success",
                 message: json.message
             });
-            console.log(json);
         } catch(error) {
             setResponse({
                 type: "error",
@@ -78,7 +77,6 @@ const TaskCard = ({id, title, description, category, status, priority, date}: Ta
         const now = new Date();
         
         let targetStatus = updatedFields.status || status;
-        console.log(updatedFields.status);
 
         if (status === "Overdue" && newDate > now && !updatedFields.status) {
             targetStatus = "Not started";
